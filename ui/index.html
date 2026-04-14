@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Respawn | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-dim": "#d73357",
+                    "tertiary": "#ff97b5",
+                    "secondary-dim": "#40ceed",
+                    "on-secondary": "#004b58",
+                    "surface-container-high": "#20201f",
+                    "secondary-fixed-dim": "#48d4f3",
+                    "on-surface": "#ffffff",
+                    "inverse-primary": "#6e3bd7",
+                    "secondary": "#53ddfc",
+                    "surface-container-highest": "#262626",
+                    "error-container": "#a70138",
+                    "on-tertiary-fixed": "#380018",
+                    "on-secondary-fixed-variant": "#005969",
+                    "primary-fixed-dim": "#a27cff",
+                    "outline": "#767575",
+                    "tertiary-fixed": "#ff8eb0",
+                    "primary-fixed": "#ae8dff",
+                    "primary": "#ba9eff",
+                    "on-primary-fixed": "#000000",
+                    "surface-dim": "#0e0e0e",
+                    "tertiary-container": "#fd81a8",
+                    "surface": "#0e0e0e",
+                    "primary-container": "#ae8dff",
+                    "secondary-container": "#00687a",
+                    "error": "#ff6e84",
+                    "surface-bright": "#2c2c2c",
+                    "tertiary-dim": "#f0779d",
+                    "surface-container-low": "#131313",
+                    "on-error-container": "#ffb2b9",
+                    "on-tertiary-container": "#59002a",
+                    "on-secondary-container": "#ecfaff",
+                    "secondary-fixed": "#65e1ff",
+                    "surface-container-lowest": "#000000",
+                    "inverse-surface": "#fcf9f8",
+                    "primary-dim": "#8455ef",
+                    "on-primary": "#39008c",
+                    "on-primary-fixed-variant": "#370086",
+                    "tertiary-fixed-dim": "#f67ca3",
+                    "on-tertiary": "#6a0934",
+                    "surface-tint": "#ba9eff",
+                    "background": "#0e0e0e",
+                    "on-primary-container": "#2b006e",
+                    "on-secondary-fixed": "#003a45",
+                    "outline-variant": "#484847",
+                    "inverse-on-surface": "#565555",
+                    "on-tertiary-fixed-variant": "#701039",
+                    "on-surface-variant": "#adaaaa",
+                    "on-background": "#ffffff",
+                    "on-error": "#490013",
+                    "surface-container": "#1a1a1a",
+                    "surface-variant": "#262626"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .kinetic-void-gradient { background: linear-gradient(135deg, #ba9eff 0%, #8455ef 100%); }
+        .glass-panel { backdrop-filter: blur(40px); background: rgba(38, 38, 38, 0.7); }
+    </style>
+</head>
+<body class="flex overflow-hidden h-screen bg-background text-on-surface">
+<!-- SideNavBar Component -->
+<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
+<div class="px-6">
+<h1 class="text-violet-500 font-black font-['Space_Grotesk'] text-2xl tracking-tighter">Respawn</h1>
+<p class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-neutral-500 mt-1">V2.4.0</p>
+</div>
+<nav class="flex flex-col gap-1 px-0 flex-grow">
+<!-- Active Tab: My Games -->
+<a class="flex items-center gap-4 py-4 px-6 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">sports_esports</span>
+<span>My Games</span>
+</a>
+<a class="flex items-center gap-4 py-4 px-6 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-4 py-4 px-6 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Support</span>
+</a>
+</nav>
+<div class="px-6 flex flex-col gap-6">
+<button class="kinetic-void-gradient text-on-primary-fixed py-3 rounded font-headline font-bold text-sm uppercase tracking-wider active:opacity-80 transition-all">
+                Take Snapshot
+            </button>
+<div class="flex items-center gap-3 py-4 text-neutral-500 font-['Space_Grotesk'] text-sm uppercase tracking-widest">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+<span>Sync Status</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col overflow-hidden bg-surface">
+<!-- TopNavBar Component -->
+<header class="w-full h-12 flex items-center justify-between items-center px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold tracking-tighter text-neutral-100">DASHBOARD</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center bg-neutral-900 rounded px-2 h-8 mr-4 border-b border-outline-variant/15">
+<span class="material-symbols-outlined text-neutral-500 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 font-body" placeholder="Search Vault..." type="text"/>
+</div>
+<div class="flex gap-1">
+<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
+</button>
+<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-grow overflow-y-auto p-12 custom-scrollbar">
+<div class="max-w-6xl mx-auto">
+<div class="mb-10">
+<h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Tracked Games</h2>
+<p class="font-body text-on-surface-variant max-w-lg">Manage your kinetic snapshots and game states across your local machine and cloud storage.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="games-grid">
+    <!-- Add New Game Card -->
+    <div id="add-game-card" class="group flex flex-col items-center justify-center min-h-[340px] border-2 border-dashed border-outline-variant/30 rounded-lg hover:border-secondary/50 hover:bg-secondary/5 transition-all cursor-pointer">
+        <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-secondary text-3xl">add</span>
+        </div>
+        <span class="font-headline font-bold text-lg text-on-surface">Add New Game</span>
+        <span class="font-body text-xs text-on-surface-variant mt-1">Manual source or Auto-detect</span>
+    </div>
+</div>
+
+<!-- Secondary Section: Activity Feed -->
+<div class="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-2xl font-bold">Recent Snapshots</h3>
+<button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All History</button>
+</div>
+<!-- Activity Items-->
+<div class="space-y-3" id="recent-snapshots">
+    <!-- dynamically populated -->
+</div>
+<!-- System Health / Sidebar Component -->
+<div class="bg-surface-container rounded-lg p-6 flex flex-col">
+<h3 class="font-headline font-bold text-lg mb-6">Vault Health</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-[10px] uppercase tracking-widest font-label mb-2">
+<span>Cloud Storage</span>
+<span class="text-on-surface">85% Used</span>
+</div>
+<div class="w-full h-1 bg-neutral-800 rounded-full overflow-hidden">
+<div class="h-full kinetic-void-gradient w-[85%]"></div>
+</div>
+</div>
+<div class="flex gap-4 p-4 rounded bg-surface-container-high border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-secondary">memory</span>
+<div>
+<p class="text-[10px] uppercase tracking-widest font-label text-on-surface-variant">CPU Overhead</p>
+<p class="font-headline font-bold text-xl text-secondary">1.4%</p>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/10">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-3">Restore Recommendation</p>
+<div class="p-4 bg-error/10 border-l-2 border-error rounded-r">
+<p class="text-xs text-on-surface leading-relaxed">Shadow of the Erdtree save conflict detected. Last stable version: <span class="font-bold text-error">#422</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+    // Load games from localStorage on startup
+    let games = JSON.parse(localStorage.getItem('respawn-games') || '[]')
+
+    function renderGames() {
+        const grid = document.getElementById('games-grid')
+        const addCard = document.getElementById('add-game-card')
+        
+        // Remove all game cards but keep add card
+        grid.querySelectorAll('.game-card').forEach(el => el.remove())
+
+        // Render each game before the add card
+        games.forEach(game => {
+            const card = document.createElement('div')
+            card.className = 'game-card group relative overflow-hidden bg-surface-container-low rounded-lg transition-all duration-500 hover:bg-surface-container cursor-pointer'
+            card.innerHTML = `
+                <div class="aspect-[16/9] w-full relative overflow-hidden bg-surface-container-highest flex items-center justify-center">
+                    <span class="material-symbols-outlined text-6xl text-on-surface-variant">sports_esports</span>
+                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+                </div>
+                <div class="p-6 relative">
+                    <h3 class="font-headline text-xl font-bold text-on-surface mb-4">${game.name}</h3>
+                    <div class="flex justify-between items-end">
+                        <div class="space-y-1">
+                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Save Folder</p>
+                            <p class="font-body text-xs text-on-surface-variant truncate max-w-[150px]">${game.path}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Snapshots</p>
+                            <div class="flex items-center gap-1 text-primary">
+                                <span class="font-headline font-bold text-lg" id="count-${game.id}">0</span>
+                                <span class="material-symbols-outlined text-sm">history</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+            card.addEventListener('click', () => openGame(game))
+            grid.insertBefore(card, addCard)
+        })
+    }
+
+    function openGame(game) {
+        // We'll build this page next
+        console.log('Opening game:', game.name)
+    }
+
+    // Add game button
+    document.getElementById('add-game-card').addEventListener('click', () => {
+    const { ipcRenderer } = require('electron')
+    ipcRenderer.invoke('select-folder').then(folderPath => {
+        if (!folderPath) return
+
+        // Use folder name as game name automatically
+        const name = folderPath.split('/').pop()
+
+        const game = {
+            id: Date.now(),
+            name: name,
+            path: folderPath
+        }
+        games.push(game)
+        localStorage.setItem('respawn-games', JSON.stringify(games))
+        renderGames()
+    })
+})
+
+    // Initial render
+    renderGames()
+</script>
+
+
+</body></html>

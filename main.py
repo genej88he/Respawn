@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import os
-from snapshot import create_snapshot, restore_snapshot, list_snapshots
+from snapshot import create_snapshot, restore_snapshot, list_snapshots, delete_snapshot
+
 
 # App appearance
 ctk.set_appearance_mode("dark")
@@ -78,6 +79,8 @@ class RespawnApp(ctk.CTk):
             ctk.CTkLabel(row, text = snapshot).pack(side = "left", padx = 10)
             ctk.CTkButton(row, text = "Restore", width = 80,
                 command = lambda s = snapshot: self.restore(s)).pack(side = "right", padx = 10)
+            ctk.CTkButton(row, text= "Delete", width=80, fg_color="red",
+                command=lambda s=snapshot: self.delete_snapshot_ui(s)).pack(side="right", padx=5)
 
     def restore(self, snapshot_name):
         if self.save_folder:
@@ -85,6 +88,11 @@ class RespawnApp(ctk.CTk):
             self.current_snapshot = snapshot_name
             self.refresh_snapshots()
             self.label_folder.configure(text = f"Restored: {snapshot_name}")
+    def delete_snapshot_ui(self, snapshot_name):
+        delete_snapshot(snapshot_name)
+        if self.current_snapshot == snapshot_name:
+            self.current_snapshot = None
+        self.refresh_snapshots()
 
 if __name__ == "__main__":
     app = RespawnApp()
