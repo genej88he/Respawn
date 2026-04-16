@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Respawn | Elden Ring Snapshot Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-dim": "#d73357",
+                        "tertiary": "#ff97b5",
+                        "secondary-dim": "#40ceed",
+                        "on-secondary": "#004b58",
+                        "surface-container-high": "#20201f",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "on-surface": "#ffffff",
+                        "inverse-primary": "#6e3bd7",
+                        "secondary": "#53ddfc",
+                        "surface-container-highest": "#262626",
+                        "error-container": "#a70138",
+                        "on-tertiary-fixed": "#380018",
+                        "on-secondary-fixed-variant": "#005969",
+                        "primary-fixed-dim": "#a27cff",
+                        "outline": "#767575",
+                        "tertiary-fixed": "#ff8eb0",
+                        "primary-fixed": "#ae8dff",
+                        "primary": "#ba9eff",
+                        "on-primary-fixed": "#000000",
+                        "surface-dim": "#0e0e0e",
+                        "tertiary-container": "#fd81a8",
+                        "surface": "#0e0e0e",
+                        "primary-container": "#ae8dff",
+                        "secondary-container": "#00687a",
+                        "error": "#ff6e84",
+                        "surface-bright": "#2c2c2c",
+                        "tertiary-dim": "#f0779d",
+                        "surface-container-low": "#131313",
+                        "on-error-container": "#ffb2b9",
+                        "on-tertiary-container": "#59002a",
+                        "on-secondary-container": "#ecfaff",
+                        "secondary-fixed": "#65e1ff",
+                        "surface-container-lowest": "#000000",
+                        "inverse-surface": "#fcf9f8",
+                        "primary-dim": "#8455ef",
+                        "on-primary": "#39008c",
+                        "on-primary-fixed-variant": "#370086",
+                        "tertiary-fixed-dim": "#f67ca3",
+                        "on-tertiary": "#6a0934",
+                        "surface-tint": "#ba9eff",
+                        "background": "#0e0e0e",
+                        "on-primary-container": "#2b006e",
+                        "on-secondary-fixed": "#003a45",
+                        "outline-variant": "#484847",
+                        "inverse-on-surface": "#565555",
+                        "on-tertiary-fixed-variant": "#701039",
+                        "on-surface-variant": "#adaaaa",
+                        "on-background": "#ffffff",
+                        "on-error": "#490013",
+                        "surface-container": "#1a1a1a",
+                        "surface-variant": "#262626"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kinetic-glow {
+            box-shadow: 0 0 15px -3px rgba(83, 221, 252, 0.3);
+        }
+        .glass-panel {
+            backdrop-filter: blur(40px);
+            background-color: rgba(38, 38, 38, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #484847;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<div class="flex min-h-screen overflow-hidden">
+<!-- SIDEBAR NAVIGATION -->
+<!-- Shared Component: SideNavBar -->
+<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 z-50">
+<div class="px-6">
+<div class="flex items-center gap-3">
+<span class="text-violet-500 font-black text-2xl font-headline tracking-tighter">Respawn</span>
+<span class="text-[10px] text-neutral-500 font-headline uppercase tracking-widest bg-neutral-800 px-1.5 py-0.5 rounded">V2.4.0</span>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<!-- My Games: Active Tab -->
+<a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="sports_esports">sports_esports</span>
+<span>My Games</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<!-- Support -->
+<a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span>Support</span>
+</a>
+</nav>
+<div class="px-4 mb-6">
+<button class="w-full py-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed font-headline font-bold text-xs uppercase tracking-widest rounded-lg hover:brightness-110 active:opacity-80 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="camera">camera</span>
+                    Take Snapshot
+                </button>
+</div>
+<div class="px-6 py-4 mt-auto">
+<div class="flex items-center gap-3 text-neutral-500 text-[10px] font-headline uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="cloud_done" data-weight="fill" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+<span>Sync Status</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden relative">
+<!-- TOP APP BAR -->
+<!-- Shared Component: TopNavBar -->
+<header class="w-full h-12 flex items-center justify-between px-4 bg-neutral-950 z-40">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-neutral-400 font-headline text-xs tracking-wide">
+<span>LIBRARY</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-violet-400 font-bold">ELDEN RING</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<input class="bg-neutral-900 border-none text-xs text-neutral-300 focus:ring-0 w-48 h-8 rounded-full px-4 font-headline tracking-wide" placeholder="Search Snapshots..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 text-neutral-500 text-sm" data-icon="search">search</span>
+</div>
+<div class="flex items-center gap-4 text-neutral-400">
+<span class="material-symbols-outlined cursor-pointer hover:bg-neutral-800 transition-colors p-1" data-icon="remove">remove</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-neutral-800 transition-colors p-1" data-icon="check_box_outline_blank">check_box_outline_blank</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-neutral-800 transition-colors p-1" data-icon="close">close</span>
+</div>
+</div>
+</header>
+<!-- CANVAS -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-12 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-surface-container-low via-surface to-surface">
+<!-- Hero Header -->
+<section class="flex flex-col md:flex-row justify-between items-end gap-8 mb-16 relative">
+<div class="flex gap-8 items-start">
+<div class="w-48 h-64 rounded-xl overflow-hidden shadow-2xl shadow-black group relative">
+<img alt="Elden Ring key art" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="atmospheric cinematic shot of a golden glowing tree in a dark fantasy landscape with heavy mist and dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7Td8os8SsU4y9rZnAiVb_7OL-GPQ85nn_33T5nfNgT5h6-p_JYisTsprsGp1vaeQ2ln62tcl6jv1AF6w5WjzJvHM-Mh6zwvyKUTCsd36Kg9o_PuI8qQ8CSS2Z0sx8bHbFCnHoqm7_8H83E7M7BoAzEd1CsQGzG4Bz0fGgr-1-RDWt6KLhdapIXttVmWBxToxNYZ3GZjMMhyFB6D0bsDtL5vvq7j_3dwHkILEPlEaj8FFVgltspEvfrTCj1l5oRvvva0hoVetn49Jc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+</div>
+<div class="flex flex-col justify-end h-full py-2">
+    <h1 id="game-title" class="font-headline text-5xl font-bold tracking-tighter text-on-surface mb-2">Elden Ring</h1>
+<p class="text-on-surface-variant font-body text-sm max-w-md">Snapshot management for Tarnished heroes. Restore any world state instantly before major boss encounters.</p>
+<div class="flex gap-4 mt-6">
+    <div id="last-sync" class="bg-surface-container-highest px-3 py-1 rounded text-[10px] font-headline uppercase tracking-widest text-secondary-fixed border border-secondary/20">
+        Last Sync: Never
+    </div>
+    <div id="snapshot-count" class="bg-surface-container-highest px-3 py-1 rounded text-[10px] font-headline uppercase tracking-widest text-primary border border-primary/20">
+        0 Snapshots
+    </div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 items-end">
+<button class="px-8 py-4 bg-gradient-to-r from-primary to-primary-dim text-on-primary-fixed font-headline font-extrabold text-sm uppercase tracking-widest rounded-lg kinetic-glow hover:brightness-110 hover:-translate-y-0.5 transition-all flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="add_a_photo" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add_a_photo</span>
+                            Take Manual Snapshot
+                        </button>
+</div>
+</section>
+<!-- SNAPSHOT TIMELINE -->
+<section class="relative">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline text-xl font-bold tracking-tight flex items-center gap-3">
+<span class="w-1.5 h-6 bg-secondary rounded-full"></span>
+                            Temporal History
+                        </h2>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-headline uppercase tracking-widest text-on-surface-variant">Filter by</span>
+<button class="bg-surface-container-high px-3 py-1 text-xs rounded hover:bg-surface-bright transition-colors">All Types</button>
+</div>
+</div>
+<!-- Timeline Vertical Line -->
+<div class="absolute left-[23px] top-12 bottom-0 w-px bg-gradient-to-b from-secondary/50 via-outline-variant/30 to-transparent"></div>
+<!-- SNAPSHOT LIST -->
+<div class="space-y-6 relative pl-12" id = "snapshot-list">
+
+
+
+</div>
+<!-- Floating Action Bar (Responsive Only) -->
+<div class="fixed bottom-8 right-8 md:hidden">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+<!-- Quick Info Glass Overlay -->
+<div class="mt-8 glass-panel border border-outline-variant/20 px-6 py-4 rounded-xl flex items-center gap-12">
+    <div class="flex flex-col">
+        <span class="text-[9px] font-headline uppercase tracking-[0.2em] text-on-surface-variant">Game</span>
+        <span class="font-headline font-bold text-primary" id="info-name">—</span>
+    </div>
+    <div class="w-px h-8 bg-outline-variant/30"></div>
+    <div class="flex flex-col">
+        <span class="text-[9px] font-headline uppercase tracking-[0.2em] text-on-surface-variant">Total Snapshots</span>
+        <span class="font-headline font-bold text-secondary" id="info-count">0</span>
+    </div>
+    <div class="w-px h-8 bg-outline-variant/30"></div>
+    <div class="flex flex-col">
+        <span class="text-[9px] font-headline uppercase tracking-[0.2em] text-on-surface-variant">Save Folder</span>
+        <span class="font-headline font-bold text-green-400 text-xs" id="info-path">—</span>
+    </div>
+</div>
+</main>
+</div>
+<script>
+    const { ipcRenderer } = require('electron')
+    
+    // Get selected game from dashboard
+    const game = JSON.parse(localStorage.getItem('selected-game'))
+    
+    // Update title and breadcrumb
+    document.getElementById('game-title').textContent = game.name
+    document.querySelector('.text-violet-400.font-bold').textContent = game.name.toUpperCase()
+
+    // Back button to dashboard
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault()
+            window.location.href = 'index.html'
+        })
+    })
+
+    // Take snapshot button
+    document.querySelector('button.kinetic-glow').addEventListener('click', () => {
+        ipcRenderer.invoke('run-python', 'create', [game.path]).then(() => {
+            loadSnapshots()
+        })
+    })
+
+    function loadSnapshots() {
+        ipcRenderer.invoke('run-python', 'list', []).then(output => {
+            const snapshots = output.split('\n').filter(s => s.trim() !== '')
+            
+            document.getElementById('snapshot-count').textContent = `${snapshots.length} Snapshots`
+            document.getElementById('info-name').textContent = game.name
+        document.getElementById('info-count').textContent = snapshots.length
+        document.getElementById('info-path').textContent = game.path
+            
+            const list = document.getElementById('snapshot-list')
+            list.innerHTML = ''
+
+            if (snapshots.length === 0) {
+                list.innerHTML = `
+                    <div class="text-on-surface-variant text-sm font-body italic p-4">
+                        No snapshots yet. Click "Take Manual Snapshot" to create one.
+                    </div>`
+                return
+            }
+
+            snapshots.forEach((snapshot, index) => {
+                const isFirst = index === 0
+                const item = document.createElement('div')
+                item.className = `group relative ${isFirst ? 'bg-surface-container border border-secondary/30 kinetic-glow' : 'bg-surface-container-low hover:bg-surface-container border border-transparent hover:border-outline-variant/30'} transition-all rounded-xl p-5`
+                item.innerHTML = `
+                    <div class="absolute -left-[44px] top-1/2 -translate-y-1/2 ${isFirst ? 'w-4 h-4 bg-secondary border-4 shadow-[0_0_10px_rgba(83,221,252,1)]' : 'w-3 h-3 bg-outline-variant border-2'} rounded-full border-surface"></div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-3">
+                                <span class="font-headline text-lg font-bold ${isFirst ? 'text-secondary' : 'text-on-surface'}">${snapshot}</span>
+                                ${isFirst ? '<span class="bg-secondary/10 text-secondary text-[10px] px-2 py-0.5 rounded font-headline font-bold uppercase tracking-widest border border-secondary/20">Latest</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="restoreSnapshot('${snapshot}')" class="flex items-center gap-1 px-4 py-2 rounded-lg bg-secondary/10 text-secondary hover:bg-secondary hover:text-on-secondary text-xs font-headline font-bold transition-all">
+                                <span class="material-symbols-outlined text-sm">history</span>
+                                RESTORE
+                            </button>
+                            <button onclick="deleteSnapshot('${snapshot}')" class="p-2 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-colors">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                `
+                list.appendChild(item)
+            })
+
+            if (snapshots.length > 0) {
+                document.getElementById('last-sync').textContent = `Last Sync: ${snapshots[0]}`
+            }
+        })
+    }
+
+    function restoreSnapshot(snapshotName) {
+        ipcRenderer.invoke('run-python', 'restore', [snapshotName, game.path]).then(() => {
+            loadSnapshots()
+        })
+    }
+
+    function deleteSnapshot(snapshotName) {
+        ipcRenderer.invoke('run-python', 'delete', [snapshotName]).then(() => {
+            loadSnapshots()
+        })
+    }
+
+    // Load snapshots on page load
+    loadSnapshots()
+</script>
+</body></html>

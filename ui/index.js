@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { spawn } = require('child_process')
 const path = require('path')
 
 function createWindow() {
@@ -26,6 +27,19 @@ ipcMain.handle('select-folder', async () => {
         properties: ['openDirectory']
     })
     return result.canceled ? null : result.filePaths[0]
+})
+
+ipcMain.handle('run-python', async (event, command, args) => {
+    return new Promise((resolve, reject) => {
+        const process = spawn('python3', [
+            path.join(__dirname, '..', 'snapshot.py'),
+            command,
+            ...args
+        ])
+        let output = ''
+        process.stdout.on('data', (data) => { output += data.toString() })
+        process.on('close', () => resolve(output.trim()))
+    })
 })
 
 app.whenReady().then(() => {
