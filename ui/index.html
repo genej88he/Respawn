@@ -1,284 +1,769 @@
 <!DOCTYPE html>
-
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Respawn | Dashboard</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "error-dim": "#d73357",
-                    "tertiary": "#ff97b5",
-                    "secondary-dim": "#40ceed",
-                    "on-secondary": "#004b58",
-                    "surface-container-high": "#20201f",
-                    "secondary-fixed-dim": "#48d4f3",
-                    "on-surface": "#ffffff",
-                    "inverse-primary": "#6e3bd7",
-                    "secondary": "#53ddfc",
-                    "surface-container-highest": "#262626",
-                    "error-container": "#a70138",
-                    "on-tertiary-fixed": "#380018",
-                    "on-secondary-fixed-variant": "#005969",
-                    "primary-fixed-dim": "#a27cff",
-                    "outline": "#767575",
-                    "tertiary-fixed": "#ff8eb0",
-                    "primary-fixed": "#ae8dff",
-                    "primary": "#ba9eff",
-                    "on-primary-fixed": "#000000",
-                    "surface-dim": "#0e0e0e",
-                    "tertiary-container": "#fd81a8",
-                    "surface": "#0e0e0e",
-                    "primary-container": "#ae8dff",
-                    "secondary-container": "#00687a",
-                    "error": "#ff6e84",
-                    "surface-bright": "#2c2c2c",
-                    "tertiary-dim": "#f0779d",
-                    "surface-container-low": "#131313",
-                    "on-error-container": "#ffb2b9",
-                    "on-tertiary-container": "#59002a",
-                    "on-secondary-container": "#ecfaff",
-                    "secondary-fixed": "#65e1ff",
-                    "surface-container-lowest": "#000000",
-                    "inverse-surface": "#fcf9f8",
-                    "primary-dim": "#8455ef",
-                    "on-primary": "#39008c",
-                    "on-primary-fixed-variant": "#370086",
-                    "tertiary-fixed-dim": "#f67ca3",
-                    "on-tertiary": "#6a0934",
-                    "surface-tint": "#ba9eff",
-                    "background": "#0e0e0e",
-                    "on-primary-container": "#2b006e",
-                    "on-secondary-fixed": "#003a45",
-                    "outline-variant": "#484847",
-                    "inverse-on-surface": "#565555",
-                    "on-tertiary-fixed-variant": "#701039",
-                    "on-surface-variant": "#adaaaa",
-                    "on-background": "#ffffff",
-                    "on-error": "#490013",
-                    "surface-container": "#1a1a1a",
-                    "surface-variant": "#262626"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Space Grotesk"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
-            }
-          },
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "error-dim": "#d73357", "tertiary": "#ff97b5", "secondary-dim": "#40ceed",
+          "on-secondary": "#004b58", "surface-container-high": "#20201f",
+          "secondary-fixed-dim": "#48d4f3", "on-surface": "#ffffff",
+          "inverse-primary": "#6e3bd7", "secondary": "#53ddfc",
+          "surface-container-highest": "#262626", "error-container": "#a70138",
+          "on-tertiary-fixed": "#380018", "on-secondary-fixed-variant": "#005969",
+          "primary-fixed-dim": "#a27cff", "outline": "#767575",
+          "tertiary-fixed": "#ff8eb0", "primary-fixed": "#ae8dff",
+          "primary": "#ba9eff", "on-primary-fixed": "#000000",
+          "surface-dim": "#0e0e0e", "tertiary-container": "#fd81a8",
+          "surface": "#0e0e0e", "primary-container": "#ae8dff",
+          "secondary-container": "#00687a", "error": "#ff6e84",
+          "surface-bright": "#2c2c2c", "tertiary-dim": "#f0779d",
+          "surface-container-low": "#131313", "on-error-container": "#ffb2b9",
+          "on-tertiary-container": "#59002a", "on-secondary-container": "#ecfaff",
+          "secondary-fixed": "#65e1ff", "surface-container-lowest": "#000000",
+          "inverse-surface": "#fcf9f8", "primary-dim": "#8455ef",
+          "on-primary": "#39008c", "on-primary-fixed-variant": "#370086",
+          "tertiary-fixed-dim": "#f67ca3", "on-tertiary": "#6a0934",
+          "surface-tint": "#ba9eff", "background": "#0e0e0e",
+          "on-primary-container": "#2b006e", "on-secondary-fixed": "#003a45",
+          "outline-variant": "#484847", "inverse-on-surface": "#565555",
+          "on-tertiary-fixed-variant": "#701039", "on-surface-variant": "#adaaaa",
+          "on-background": "#ffffff", "on-error": "#490013",
+          "surface-container": "#1a1a1a", "surface-variant": "#262626"
         },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        fontFamily: { headline: ["Space Grotesk"], body: ["Inter"], label: ["Inter"] }
       }
-    </script>
+    }
+  }
+</script>
 <style>
-        body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .kinetic-void-gradient { background: linear-gradient(135deg, #ba9eff 0%, #8455ef 100%); }
-        .glass-panel { backdrop-filter: blur(40px); background: rgba(38, 38, 38, 0.7); }
-    </style>
+  body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  .kinetic-void-gradient { background: linear-gradient(135deg, #ba9eff 0%, #8455ef 100%); }
+  .glass-panel { backdrop-filter: blur(40px); background: rgba(38, 38, 38, 0.7); }
+  .ghost-border { border: 1px solid rgba(72, 72, 71, 0.2); }
+</style>
 </head>
 <body class="flex overflow-hidden h-screen bg-background text-on-surface">
-<!-- SideNavBar Component -->
-<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
-<div class="px-6">
-<h1 class="text-violet-500 font-black font-['Space_Grotesk'] text-2xl tracking-tighter">Respawn</h1>
-<p class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-neutral-500 mt-1">V2.4.0</p>
-</div>
-<nav class="flex flex-col gap-1 px-0 flex-grow">
-<!-- Active Tab: My Games -->
-<a class="flex items-center gap-4 py-4 px-6 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined">sports_esports</span>
-<span>My Games</span>
-</a>
-<a class="flex items-center gap-4 py-4 px-6 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span>Settings</span>
-</a>
-<a class="flex items-center gap-4 py-4 px-6 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 font-['Space_Grotesk'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined">help_outline</span>
-<span>Support</span>
-</a>
-</nav>
-<div class="px-6 flex flex-col gap-6">
-<button class="kinetic-void-gradient text-on-primary-fixed py-3 rounded font-headline font-bold text-sm uppercase tracking-wider active:opacity-80 transition-all">
-                Take Snapshot
-            </button>
-<div class="flex items-center gap-3 py-4 text-neutral-500 font-['Space_Grotesk'] text-sm uppercase tracking-widest">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
-<span>Sync Status</span>
-</div>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="flex-grow flex flex-col overflow-hidden bg-surface">
-<!-- TopNavBar Component -->
-<header class="w-full h-12 flex items-center justify-between items-center px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
-<div class="flex items-center gap-4">
-<span class="text-xl font-bold tracking-tighter text-neutral-100">DASHBOARD</span>
-</div>
-<div class="flex items-center gap-2">
-<div class="flex items-center bg-neutral-900 rounded px-2 h-8 mr-4 border-b border-outline-variant/15">
-<span class="material-symbols-outlined text-neutral-500 text-sm">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 font-body" placeholder="Search Vault..." type="text"/>
-</div>
-<div class="flex gap-1">
-<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-<span class="material-symbols-outlined text-sm">remove</span>
-</button>
-<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-<span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
-</button>
-<button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-<span class="material-symbols-outlined text-sm">close</span>
-</button>
-</div>
-</div>
-</header>
-<!-- Content Area -->
-<div class="flex-grow overflow-y-auto p-12 custom-scrollbar">
-<div class="max-w-6xl mx-auto">
-<div class="mb-10">
-<h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Tracked Games</h2>
-<p class="font-body text-on-surface-variant max-w-lg">Manage your kinetic snapshots and game states across your local machine and cloud storage.</p>
-</div>
-<!-- Bento Grid Layout -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="games-grid">
-    <!-- Add New Game Card -->
-    <div id="add-game-card" class="group flex flex-col items-center justify-center min-h-[340px] border-2 border-dashed border-outline-variant/30 rounded-lg hover:border-secondary/50 hover:bg-secondary/5 transition-all cursor-pointer">
-        <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-secondary text-3xl">add</span>
-        </div>
-        <span class="font-headline font-bold text-lg text-on-surface">Add New Game</span>
-        <span class="font-body text-xs text-on-surface-variant mt-1">Manual source or Auto-detect</span>
-    </div>
-</div>
 
-<!-- Secondary Section: Activity Feed -->
-<div class="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="lg:col-span-2">
-<div class="flex items-center justify-between mb-6">
-<h3 class="font-headline text-2xl font-bold">Recent Snapshots</h3>
-<button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All History</button>
-</div>
-<!-- Activity Items-->
-<div class="space-y-3" id="recent-snapshots">
-    <!-- dynamically populated -->
-</div>
-<!-- System Health / Sidebar Component -->
-<div class="bg-surface-container rounded-lg p-6 flex flex-col">
-<h3 class="font-headline font-bold text-lg mb-6">Vault Health</h3>
-<div class="space-y-6">
-    <div>
-        <div class="flex justify-between text-[10px] uppercase tracking-widest font-label mb-2">
-            <span>Cloud Storage</span>
-            <span class="text-on-surface">85% Used</span>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
+  <div class="px-6">
+    <div class="flex items-center gap-3">
+      <span class="text-violet-500 font-black text-2xl font-headline tracking-tighter">Respawn</span>
+      <span class="text-[10px] text-neutral-500 font-headline uppercase tracking-widest bg-neutral-800 px-1.5 py-0.5 rounded">V1.0.0</span>
+    </div>
+  </div>
+  <nav class="flex-1 flex flex-col gap-1">
+    <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+      <span class="material-symbols-outlined">sports_esports</span><span>My Games</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+      <span class="material-symbols-outlined">settings</span><span>Settings</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+      <span class="material-symbols-outlined">help_outline</span><span>Support</span>
+    </a>
+  </nav>
+  <div class="px-6 py-4 mt-auto">
+    <div class="flex items-center gap-3 text-neutral-500 text-[10px] font-headline uppercase tracking-widest">
+      <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+      <span>Sync Status</span>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-grow flex flex-col overflow-hidden bg-surface">
+  <header class="w-full h-12 flex items-center justify-between px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
+    <div class="flex items-center gap-4">
+      <span class="text-xl font-bold tracking-tighter text-neutral-100">DASHBOARD</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex items-center bg-neutral-900 rounded px-2 h-8 mr-4 border-b border-outline-variant/15">
+        <span class="material-symbols-outlined text-neutral-500 text-sm">search</span>
+        <input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 font-body" placeholder="Search Vault..." type="text"/>
+      </div>
+      <div class="flex gap-1">
+        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+          <span class="material-symbols-outlined text-sm">remove</span>
+        </button>
+        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+          <span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
+        </button>
+        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
+          <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-grow overflow-y-auto p-12">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-10">
+        <h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Tracked Games</h2>
+        <p class="font-body text-on-surface-variant max-w-lg">Manage your kinetic snapshots and game states across your local machine and cloud storage.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="games-grid">
+        <div id="add-game-card" class="group flex flex-col items-center justify-center min-h-[340px] border-2 border-dashed border-outline-variant/30 rounded-lg hover:border-secondary/50 hover:bg-secondary/5 transition-all cursor-pointer">
+          <div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-secondary text-3xl">add</span>
+          </div>
+          <span class="font-headline font-bold text-lg text-on-surface">Add New Game</span>
+          <span class="font-body text-xs text-on-surface-variant mt-1">Manual source or Auto-detect</span>
         </div>
-    <div class="w-full h-1 bg-neutral-800 rounded-full overflow-hidden">
-        <div class="h-full kinetic-void-gradient w-[85%]"></div>
-    </div>
-    </div>
-    <div class="flex gap-4 p-4 rounded bg-surface-container-high border-b border-outline-variant/20">
-        <span class="material-symbols-outlined text-secondary">memory</span>
-        <div>
-            <p class="text-[10px] uppercase tracking-widest font-label text-on-surface-variant">CPU Overhead</p>
-            <p class="font-headline font-bold text-xl text-secondary">1.4%</p>
+      </div>
+
+      <div class="mt-16 border-t border-neutral-600"></div>
+
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="font-headline text-2xl font-bold">Recent Snapshots</h3>
+            <button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All History</button>
+          </div>
+          <div class="space-y-3" id="recent-snapshots"></div>
         </div>
-    </div>
-    <div class="mt-auto pt-6 border-t border-outline-variant/10">
-        <p class="text-[10px] text-on-surface-variant uppercase tracking-widest mb-3">Restore Recommendation</p>
-        <div class="p-4 bg-error/10 border-l-2 border-error rounded-r">
-            <p class="text-xs text-on-surface leading-relaxed">Shadow of the Erdtree save conflict detected. Last stable version: <span class="font-bold text-error">#422</span></p>
+        <div class="bg-surface-container rounded-lg p-6 flex flex-col gap-6">
+          <h3 class="font-headline font-bold text-lg">Vault Stats</h3>
+          <div class="flex gap-4 p-4 rounded bg-surface-container-high">
+            <span class="material-symbols-outlined text-secondary">folder</span>
+            <div>
+              <p class="text-[10px] uppercase tracking-widest font-label text-on-surface-variant">Tracked Games</p>
+              <p class="font-headline font-bold text-xl text-secondary" id="stat-games">0</p>
+            </div>
+          </div>
+          <div class="flex gap-4 p-4 rounded bg-surface-container-high">
+            <span class="material-symbols-outlined text-primary">history</span>
+            <div>
+              <p class="text-[10px] uppercase tracking-widest font-label text-on-surface-variant">Total Snapshots</p>
+              <p class="font-headline font-bold text-xl text-primary" id="stat-snapshots">0</p>
+            </div>
+          </div>
+          <div class="flex gap-4 p-4 rounded bg-surface-container-high">
+            <span class="material-symbols-outlined text-green-400">check_circle</span>
+            <div>
+              <p class="text-[10px] uppercase tracking-widest font-label text-on-surface-variant">Status</p>
+              <p class="font-headline font-bold text-xl text-green-400">OPTIMAL</p>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-</div>
-</div>
-</div>
-</div>
+  </div>
 </main>
 
+<!-- ===================== ADD GAME WIZARD MODAL ===================== -->
+<div id="add-game-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-6">
+  <div class="w-full max-w-4xl glass-panel rounded-xl shadow-2xl shadow-black/80 flex overflow-hidden border border-white/5">
+    <aside class="w-72 bg-neutral-900 p-8 flex flex-col gap-10 flex-shrink-0">
+      <div>
+        <h2 class="text-violet-500 font-black font-headline uppercase tracking-widest text-sm mb-1">Add New Game</h2>
+        <p class="text-on-surface-variant text-xs font-body tracking-wider">CONFIGURATION WIZARD</p>
+      </div>
+      <nav class="flex flex-col gap-6" id="wizard-steps-nav">
+        <div class="wizard-step-nav flex items-center gap-4" data-step="1">
+          <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center bg-primary text-on-primary-container font-headline font-bold shadow-[0_0_15px_rgba(186,158,255,0.4)] text-sm">1</div>
+          <div class="flex flex-col">
+            <span class="text-xs font-label text-on-surface uppercase tracking-tighter">Save Path</span>
+            <span class="text-[10px] text-primary-fixed-dim">Source Directory</span>
+          </div>
+        </div>
+        <div class="wizard-step-nav flex items-center gap-4 opacity-50" data-step="2">
+          <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-headline font-bold text-sm">2</div>
+          <div class="flex flex-col">
+            <span class="text-xs font-label text-on-surface-variant uppercase tracking-tighter">Identity</span>
+            <span class="text-[10px] text-on-surface-variant">Title &amp; Metadata</span>
+          </div>
+        </div>
+        <div class="wizard-step-nav flex items-center gap-4 opacity-50" data-step="3">
+          <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-headline font-bold text-sm">3</div>
+          <div class="flex flex-col">
+            <span class="text-xs font-label text-on-surface-variant uppercase tracking-tighter">Visuals</span>
+            <span class="text-[10px] text-on-surface-variant">Icon &amp; Banners</span>
+          </div>
+        </div>
+        <div class="wizard-step-nav flex items-center gap-4 opacity-50" data-step="4">
+          <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-headline font-bold text-sm">4</div>
+          <div class="flex flex-col">
+            <span class="text-xs font-label text-on-surface-variant uppercase tracking-tighter">Initialize</span>
+            <span class="text-[10px] text-on-surface-variant">Confirm Sync</span>
+          </div>
+        </div>
+      </nav>
+      <div class="mt-auto">
+        <p class="text-[10px] text-on-surface-variant font-body">V1.0.0 • STABLE BUILD</p>
+      </div>
+    </aside>
+
+        <section class="flex-1 p-12 bg-surface flex flex-col min-h-[480px]">
+        <!-- STEP 1 -->
+        <div id="wizard-step-1" class="flex flex-col flex-1">
+            <div class="mb-10">
+            <h1 class="text-4xl font-headline font-bold text-on-surface mb-3 tracking-tight">Select Save Folder</h1>
+            <p class="text-on-surface-variant font-body max-w-md leading-relaxed">Respawn needs to monitor your game's local save directory to create snapshots. Most games store saves in %AppData% or Documents.</p>
+            </div>
+            <div class="space-y-6 flex-1">
+            <div class="space-y-3">
+                <label class="text-[10px] uppercase tracking-widest text-secondary font-bold">Directory Path</label>
+                <div class="flex gap-2">
+                <input id="wizard-path-input" class="flex-1 bg-surface-container-highest border-0 border-b-2 border-outline-variant focus:border-secondary focus:ring-0 text-on-surface py-3 px-4 transition-all duration-300 placeholder:text-outline text-sm" placeholder="Click Browse or paste a path..." type="text" readonly/>
+                <button id="wizard-browse-btn" class="px-6 bg-surface-bright hover:bg-neutral-700 text-on-surface font-headline font-semibold text-sm transition-colors rounded-lg ghost-border flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">folder_open</span> Browse
+                </button>
+                </div>
+            </div>
+            </div>
+            <div class="flex items-center justify-between pt-8 border-t border-outline-variant/10 mt-8">
+            <button onclick="closeAddGameModal()" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span> Cancel
+            </button>
+            <button id="wizard-step1-next" onclick="wizardGoToStep(2)" disabled class="kinetic-void-gradient px-10 py-3 rounded-lg text-on-primary-fixed font-headline font-bold shadow-[0_4px_20px_rgba(186,158,255,0.25)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100">
+                Next Step <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+            </div>
+        </div>
+
+      <!-- STEP 2 -->
+        <div id="wizard-step-2" class="hidden flex-col flex-1">
+            <div class="mb-10">
+            <h1 class="text-4xl font-headline font-bold text-on-surface mb-3 tracking-tight">Name Your Game</h1>
+            <p class="text-on-surface-variant font-body max-w-md leading-relaxed">Give this game an identifiable name. We've auto-filled it from the folder name — feel free to change it.</p>
+            </div>
+            <div class="space-y-6 flex-1">
+            <div class="space-y-3">
+                <label class="text-[10px] uppercase tracking-widest text-secondary font-bold">Game Title</label>
+                <input id="wizard-name-input" class="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant focus:border-secondary focus:ring-0 text-on-surface py-3 px-4 transition-all duration-300 placeholder:text-outline text-sm" placeholder="e.g. Elden Ring" type="text"/>
+            </div>
+            <div class="p-4 bg-surface-container-low rounded-lg border border-white/5">
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label mb-1">Save Path</p>
+                <p class="text-sm text-on-surface-variant font-body truncate" id="wizard-path-preview">—</p>
+            </div>
+            </div>
+            <div class="flex items-center justify-between pt-8 border-t border-outline-variant/10 mt-8">
+            <button onclick="wizardGoToStep(1)" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span> Back
+            </button>
+            <button onclick="wizardGoToStep(3)" class="kinetic-void-gradient px-10 py-3 rounded-lg text-on-primary-fixed font-headline font-bold shadow-[0_4px_20px_rgba(186,158,255,0.25)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
+                Add Game <span class="material-symbols-outlined">check</span>
+            </button>
+            </div>
+        </div>
+
+            <!-- STEP 3: Visuals - Game Art Search -->
+        <div id="wizard-step-3" class="hidden flex-col flex-1">
+            <div class="mb-8">
+            <h1 class="text-4xl font-headline font-bold text-on-surface mb-3 tracking-tight">Find Cover Art</h1>
+            <p class="text-on-surface-variant font-body max-w-md leading-relaxed">Search for your game to find cover art. We've pre-filled the name from Step 2.</p>
+            </div>
+            <div class="space-y-4 flex-1">
+            <div class="space-y-3">
+                <label class="text-[10px] uppercase tracking-widest text-secondary font-bold">Search</label>
+                <div class="flex gap-2">
+                <input id="wizard-art-search" class="flex-1 bg-surface-container-highest border-0 border-b-2 border-outline-variant focus:border-secondary focus:ring-0 text-on-surface py-3 px-4 transition-all duration-300 placeholder:text-outline text-sm" placeholder="e.g. Elden Ring" type="text"/>
+                <button id="wizard-art-search-btn" class="px-6 bg-surface-bright hover:bg-neutral-700 text-on-surface font-headline font-semibold text-sm transition-colors rounded-lg ghost-border flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">search</span> Search
+                </button>
+                </div>
+            </div>
+            <!-- Results grid -->
+            <div id="wizard-art-results" class="grid grid-cols-3 gap-3 overflow-y-auto max-h-48">
+                <div class="col-span-3 text-center text-on-surface-variant text-xs font-body py-6">Search for a game to see cover art options.</div>
+            </div>
+            <!-- Selected preview -->
+            <div id="wizard-art-selected" class="hidden flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-secondary/30">
+                <img id="wizard-art-preview-img" src="" class="w-12 h-8 object-cover rounded"/>
+                <div>
+                <p class="text-[10px] uppercase tracking-widest text-secondary font-bold">Selected</p>
+                <p id="wizard-art-preview-name" class="text-xs text-on-surface font-body truncate max-w-[200px]"></p>
+                </div>
+                <button onclick="clearArtSelection()" class="ml-auto text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+            </div>
+            <div class="flex items-center justify-between pt-6 border-t border-outline-variant/10 mt-6">
+            <button onclick="wizardGoToStep(2)" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span> Back
+            </button>
+            <div class="flex items-center gap-3">
+                <button onclick="wizardGoToStep(4)" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors">
+                Skip
+                </button>
+                <button onclick="wizardGoToStep(4)" class="kinetic-void-gradient px-10 py-3 rounded-lg text-on-primary-fixed font-headline font-bold transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-95">
+                Next Step <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+            </div>
+        </div>
+
+            <!-- STEP 4: Initialize -->
+        <div id="wizard-step-4" class="hidden flex-col flex-1">
+            <div class="mb-8">
+            <h1 class="text-4xl font-headline font-bold text-on-surface mb-3 tracking-tight">Ready to Initialize</h1>
+            <p class="text-on-surface-variant font-body max-w-md leading-relaxed">Review your configuration before adding the game to your vault.</p>
+            </div>
+            <div class="space-y-4 flex-1">
+            <!-- Summary card -->
+            <div class="flex gap-4 p-4 bg-surface-container-low rounded-lg border border-white/5">
+                <div id="wizard-confirm-art" class="w-20 h-14 rounded bg-surface-container-highest flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <span class="material-symbols-outlined text-2xl text-on-surface-variant">sports_esports</span>
+                </div>
+                <div class="flex flex-col justify-center gap-1">
+                <p class="font-headline font-bold text-on-surface" id="wizard-confirm-name">—</p>
+                <p class="text-xs text-on-surface-variant font-body truncate max-w-[280px]" id="wizard-confirm-path">—</p>
+                </div>
+            </div>
+            <!-- Initial snapshot toggle -->
+            <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-white/5 cursor-pointer" onclick="toggleInitialSnapshot()">
+                <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">camera</span>
+                <div>
+                    <p class="text-sm font-bold text-on-surface font-headline">Take initial snapshot</p>
+                    <p class="text-[10px] text-on-surface-variant font-body">Capture the current save state right now</p>
+                </div>
+                </div>
+                <div id="snapshot-toggle" class="w-10 h-6 rounded-full bg-outline-variant relative transition-all duration-300">
+                <div id="snapshot-toggle-knob" class="absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-all duration-300"></div>
+                </div>
+            </div>
+            </div>
+            <div class="flex items-center justify-between pt-6 border-t border-outline-variant/10 mt-6">
+            <button onclick="wizardGoToStep(3)" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors flex items-center gap-2">
+                <span class="material-symbols-outlined">arrow_back</span> Back
+            </button>
+            <button onclick="wizardConfirm()" class="kinetic-void-gradient px-10 py-3 rounded-lg text-on-primary-fixed font-headline font-bold shadow-[0_4px_20px_rgba(186,158,255,0.25)] hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
+                Add to Vault <span class="material-symbols-outlined">rocket_launch</span>
+            </button>
+            </div>
+        </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===================== DELETE GAME MODAL ===================== -->
+<div id="delete-game-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-6">
+  <div class="bg-surface-container rounded-xl border border-outline-variant/20 p-8 max-w-md w-full shadow-2xl">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-error">warning</span>
+      <h2 class="font-headline font-bold text-xl text-on-surface">Delete Game?</h2>
+    </div>
+    <p class="text-on-surface-variant font-body text-sm mb-6">
+      This will permanently delete <span id="delete-game-modal-name" class="text-on-surface font-bold"></span> and all its snapshots from disk. This cannot be undone.
+    </p>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeDeleteGameModal()" class="px-6 py-2 rounded-lg bg-surface-bright hover:bg-neutral-700 text-on-surface font-headline font-semibold text-sm transition-colors">Cancel</button>
+      <button onclick="confirmDeleteGame()" class="px-6 py-2 rounded-lg bg-error hover:bg-error/80 text-on-error font-headline font-semibold text-sm transition-colors">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RENAME GAME MODAL ===================== -->
+<div id="rename-game-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-6">
+  <div class="bg-surface-container rounded-xl border border-outline-variant/20 p-8 max-w-md w-full shadow-2xl">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-primary">edit</span>
+      <h2 class="font-headline font-bold text-xl text-on-surface">Rename Game</h2>
+    </div>
+    <p class="text-on-surface-variant font-body text-sm mb-6">Enter a new display name for this game.</p>
+    <div class="mb-6">
+      <label class="text-[10px] uppercase tracking-widest text-secondary font-bold block mb-2">Game Title</label>
+      <input id="rename-game-input" class="w-full bg-surface-container-highest border-0 border-b-2 border-outline-variant focus:border-secondary focus:ring-0 text-on-surface py-3 px-4 transition-all duration-300 text-sm" type="text"/>
+    </div>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeRenameModal()" class="px-6 py-2 rounded-lg bg-surface-bright hover:bg-neutral-700 text-on-surface font-headline font-semibold text-sm transition-colors">Cancel</button>
+      <button onclick="confirmRename()" class="kinetic-void-gradient px-6 py-2 rounded-lg text-on-primary-fixed font-headline font-bold text-sm transition-all hover:scale-[1.02] active:scale-95">Rename</button>
+    </div>
+  </div>
+</div>
+
+
+
+
 <script>
-    // Load games from localStorage on startup
-    let games = JSON.parse(localStorage.getItem('respawn-games') || '[]')
-
-    function renderGames() {
-        const grid = document.getElementById('games-grid')
-        const addCard = document.getElementById('add-game-card')
-        
-        // Remove all game cards but keep add card
-        grid.querySelectorAll('.game-card').forEach(el => el.remove())
-
-        // Render each game before the add card
-        games.forEach(game => {
-            const card = document.createElement('div')
-            card.className = 'game-card group relative overflow-hidden bg-surface-container-low rounded-lg transition-all duration-500 hover:bg-surface-container cursor-pointer'
-            card.innerHTML = `
-                <div class="aspect-[16/9] w-full relative overflow-hidden bg-surface-container-highest flex items-center justify-center">
-                    <span class="material-symbols-outlined text-6xl text-on-surface-variant">sports_esports</span>
-                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
-                </div>
-                <div class="p-6 relative">
-                    <h3 class="font-headline text-xl font-bold text-on-surface mb-4">${game.name}</h3>
-                    <div class="flex justify-between items-end">
-                        <div class="space-y-1">
-                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Save Folder</p>
-                            <p class="font-body text-xs text-on-surface-variant truncate max-w-[150px]">${game.path}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Snapshots</p>
-                            <div class="flex items-center gap-1 text-primary">
-                                <span class="font-headline font-bold text-lg" id="count-${game.id}">0</span>
-                                <span class="material-symbols-outlined text-sm">history</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `
-            card.addEventListener('click', () => openGame(game))
-            grid.insertBefore(card, addCard)
-        })
-    }
-
-    function openGame(game) {
-    // Store selected game so game.html can access it
-        localStorage.setItem('selected-game', JSON.stringify(game))
-        window.location.href = 'game.html'
-    }
-
-    // Add game button
-    document.getElementById('add-game-card').addEventListener('click', () => {
     const { ipcRenderer } = require('electron')
-    ipcRenderer.invoke('select-folder').then(folderPath => {
-        if (!folderPath) return
-
-        // Use folder name as game name automatically
-        const name = folderPath.split('/').pop()
-
-        const game = {
-            id: Date.now(),
-            name: name,
-            path: folderPath
-        }
-        games.push(game)
+    let RAWG_API_KEY = ''
+    let games = JSON.parse(localStorage.getItem('respawn-games') || '[]')
+  
+    // ==================== RENDER GAMES ====================
+    function renderGames() {
+      const grid = document.getElementById('games-grid')
+      const addCard = document.getElementById('add-game-card')
+      grid.querySelectorAll('.game-card').forEach(el => el.remove())
+  
+      games.forEach(game => {
+        const card = document.createElement('div')
+        card.className = 'game-card group relative overflow-hidden bg-surface-container-low rounded-lg transition-all duration-500 hover:bg-surface-container cursor-pointer'
+        card.innerHTML = `
+          <div class="aspect-[16/9] w-full relative overflow-hidden bg-surface-container-highest flex items-center justify-center">
+            ${game.coverUrl
+              ? `<img src="${game.coverUrl}" class="w-full h-full object-cover"/>`
+              : `<span class="material-symbols-outlined text-6xl text-on-surface-variant">sports_esports</span>`
+            }
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+          </div>
+          <div class="p-6 relative">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="font-headline text-xl font-bold text-on-surface flex-1 mr-2 truncate">${game.name}</h3>
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <button onclick="event.stopPropagation(); openRenameModal(${game.id})"
+                  class="p-1 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                  title="Rename game">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                </button>
+                <button onclick="event.stopPropagation(); deleteGame(${game.id})"
+                  class="p-1 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-colors">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+            </div>
+            <div class="flex justify-between items-end">
+              <div class="space-y-1">
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Save Folder</p>
+                <p class="font-body text-xs text-on-surface-variant truncate max-w-[150px]">${game.path}</p>
+              </div>
+              <div class="text-right">
+                <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Snapshots</p>
+                <div class="flex items-center gap-1 text-primary">
+                  <span class="font-headline font-bold text-lg" id="count-${game.id}">—</span>
+                  <span class="material-symbols-outlined text-sm">history</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+        card.addEventListener('click', () => openGame(game))
+        grid.insertBefore(card, addCard)
+  
+        ipcRenderer.invoke('run-python', 'list', [game.id]).then(output => {
+          const count = output.split('\n').filter(s => s.trim() !== '').length
+          const countEl = document.getElementById(`count-${game.id}`)
+          if (countEl) countEl.textContent = count
+        })
+      })
+      updateVaultStats()
+    }
+  
+    function openGame(game) {
+      localStorage.setItem('selected-game', JSON.stringify(game))
+      window.location.href = 'game.html'
+    }
+  
+    // ==================== DELETE GAME ====================
+    let pendingDeleteGame = null
+  
+    function deleteGame(gameId) {
+      pendingDeleteGame = gameId
+      const game = games.find(g => g.id === gameId)
+      document.getElementById('delete-game-modal-name').textContent = game.name
+      document.getElementById('delete-game-modal').classList.remove('hidden')
+    }
+  
+    function closeDeleteGameModal() {
+      pendingDeleteGame = null
+      document.getElementById('delete-game-modal').classList.add('hidden')
+    }
+  
+    function confirmDeleteGame() {
+      if (!pendingDeleteGame) return
+      ipcRenderer.invoke('run-python', 'delete_game', [pendingDeleteGame]).then(() => {
+        games = games.filter(g => g.id !== pendingDeleteGame)
         localStorage.setItem('respawn-games', JSON.stringify(games))
+        closeDeleteGameModal()
         renderGames()
+        loadRecentSnapshots()
+      })
+    }
+  
+    // ==================== RENAME GAME ====================
+    let pendingRenameGame = null
+  
+    function openRenameModal(gameId) {
+      pendingRenameGame = gameId
+      const game = games.find(g => g.id === gameId)
+      const input = document.getElementById('rename-game-input')
+      input.value = game.name
+      document.getElementById('rename-game-modal').classList.remove('hidden')
+      setTimeout(() => { input.focus(); input.select() }, 50)
+    }
+  
+    function closeRenameModal() {
+      pendingRenameGame = null
+      document.getElementById('rename-game-modal').classList.add('hidden')
+    }
+  
+    function confirmRename() {
+      if (!pendingRenameGame) return
+      const newName = document.getElementById('rename-game-input').value.trim()
+      if (!newName) return
+      games = games.map(g => g.id === pendingRenameGame ? { ...g, name: newName } : g)
+      localStorage.setItem('respawn-games', JSON.stringify(games))
+      closeRenameModal()
+      renderGames()
+      loadRecentSnapshots()
+    }
+  
+    document.getElementById('rename-game-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') confirmRename()
+      if (e.key === 'Escape') closeRenameModal()
     })
-})
-
-    // Initial render
-    renderGames()
-</script>
-
-
+  
+    // ==================== ADD GAME WIZARD ====================
+    let wizardCurrentStep = 1
+    let wizardPath = ''
+    let wizardCoverUrl = ''
+    let wizardInitialSnapshot = false
+  
+    function openAddGameModal() {
+      wizardCurrentStep = 1
+      wizardPath = ''
+      wizardCoverUrl = ''
+      wizardInitialSnapshot = false
+      document.getElementById('wizard-path-input').value = ''
+      document.getElementById('wizard-name-input').value = ''
+      document.getElementById('wizard-art-search').value = ''
+      document.getElementById('wizard-art-results').innerHTML = '<div class="col-span-3 text-center text-on-surface-variant text-xs font-body py-6">Search for a game to see cover art options.</div>'
+      document.getElementById('wizard-art-selected').classList.add('hidden')
+      setSnapshotToggle(false)
+      document.getElementById('wizard-step1-next').disabled = true
+      wizardGoToStep(1)
+      document.getElementById('add-game-modal').classList.remove('hidden')
+    }
+  
+    function closeAddGameModal() {
+      document.getElementById('add-game-modal').classList.add('hidden')
+    }
+  
+    function wizardGoToStep(step) {
+      // Populate step 3 search with game name
+      if (step === 3) {
+        const name = document.getElementById('wizard-name-input').value.trim()
+        if (name) document.getElementById('wizard-art-search').value = name
+      }
+      // Populate step 4 summary
+      if (step === 4) {
+        const name = document.getElementById('wizard-name-input').value.trim()
+        document.getElementById('wizard-confirm-name').textContent = name || '—'
+        document.getElementById('wizard-confirm-path').textContent = wizardPath || '—'
+        const artContainer = document.getElementById('wizard-confirm-art')
+        if (wizardCoverUrl) {
+          artContainer.innerHTML = `<img src="${wizardCoverUrl}" class="w-full h-full object-cover"/>`
+        } else {
+          artContainer.innerHTML = `<span class="material-symbols-outlined text-2xl text-on-surface-variant">sports_esports</span>`
+        }
+      }
+  
+      wizardCurrentStep = step
+      ;[1, 2, 3, 4].forEach(s => {
+        const el = document.getElementById(`wizard-step-${s}`)
+        if (s === step) {
+          el.classList.remove('hidden')
+          el.classList.add('flex')
+        } else {
+          el.classList.add('hidden')
+          el.classList.remove('flex')
+        }
+      })
+      document.querySelectorAll('.wizard-step-nav').forEach(nav => {
+        const navStep = parseInt(nav.dataset.step)
+        const circle = nav.querySelector('.step-circle')
+        if (navStep === step) {
+          nav.classList.remove('opacity-50')
+          circle.className = 'step-circle w-8 h-8 rounded-full flex items-center justify-center bg-primary text-on-primary-container font-headline font-bold shadow-[0_0_15px_rgba(186,158,255,0.4)] text-sm'
+        } else if (navStep < step) {
+          nav.classList.remove('opacity-50')
+          circle.className = 'step-circle w-8 h-8 rounded-full flex items-center justify-center bg-primary/30 text-primary font-headline font-bold text-sm'
+        } else {
+          nav.classList.add('opacity-50')
+          circle.className = 'step-circle w-8 h-8 rounded-full flex items-center justify-center border-2 border-outline-variant text-on-surface-variant font-headline font-bold text-sm'
+        }
+      })
+    }
+  
+    document.getElementById('wizard-browse-btn').addEventListener('click', () => {
+      ipcRenderer.invoke('select-folder').then(folderPath => {
+        if (!folderPath) return
+        wizardPath = folderPath
+        document.getElementById('wizard-path-input').value = folderPath
+        document.getElementById('wizard-path-preview').textContent = folderPath
+        const folderName = folderPath.split(/[\\/]/).pop()
+        document.getElementById('wizard-name-input').value = folderName
+        document.getElementById('wizard-step1-next').disabled = false
+      })
+    })
+  
+    // ==================== RAWG ART SEARCH ====================
+    async function searchGameArt() {
+      const query = document.getElementById('wizard-art-search').value.trim()
+      if (!query) return
+      const resultsEl = document.getElementById('wizard-art-results')
+      resultsEl.innerHTML = '<div class="col-span-3 text-center text-on-surface-variant text-xs font-body py-6">Searching...</div>'
+      try {
+        const res = await fetch(`https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(query)}&page_size=6`)
+        const data = await res.json()
+        resultsEl.innerHTML = ''
+        if (!data.results || data.results.length === 0) {
+          resultsEl.innerHTML = '<div class="col-span-3 text-center text-on-surface-variant text-xs font-body py-6">No results found.</div>'
+          return
+        }
+        data.results.forEach(game => {
+          if (!game.background_image) return
+          const img = document.createElement('div')
+          img.className = 'relative cursor-pointer rounded overflow-hidden border-2 border-transparent hover:border-primary transition-all group'
+          img.innerHTML = `
+            <img src="${game.background_image}" class="w-full h-16 object-cover"/>
+            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-end p-1">
+              <p class="text-[9px] text-white font-bold truncate opacity-0 group-hover:opacity-100 transition-opacity">${game.name}</p>
+            </div>
+          `
+          img.addEventListener('click', () => selectArt(game.background_image, game.name))
+          resultsEl.appendChild(img)
+        })
+      } catch (e) {
+        resultsEl.innerHTML = '<div class="col-span-3 text-center text-error text-xs font-body py-6">Search failed. Check your API key.</div>'
+      }
+    }
+  
+    function selectArt(url, name) {
+      wizardCoverUrl = url
+      document.getElementById('wizard-art-preview-img').src = url
+      document.getElementById('wizard-art-preview-name').textContent = name
+      document.getElementById('wizard-art-selected').classList.remove('hidden')
+      // Highlight selected in grid
+      document.querySelectorAll('#wizard-art-results > div').forEach(el => {
+        const img = el.querySelector('img')
+        el.classList.toggle('border-primary', img && img.src === url)
+        el.classList.toggle('border-transparent', !(img && img.src === url))
+      })
+    }
+  
+    function clearArtSelection() {
+      wizardCoverUrl = ''
+      document.getElementById('wizard-art-selected').classList.add('hidden')
+      document.querySelectorAll('#wizard-art-results > div').forEach(el => {
+        el.classList.remove('border-primary')
+        el.classList.add('border-transparent')
+      })
+    }
+  
+    document.getElementById('wizard-art-search-btn').addEventListener('click', searchGameArt)
+    document.getElementById('wizard-art-search').addEventListener('keydown', e => {
+      if (e.key === 'Enter') searchGameArt()
+    })
+  
+    // ==================== SNAPSHOT TOGGLE ====================
+    function setSnapshotToggle(val) {
+      wizardInitialSnapshot = val
+      const track = document.getElementById('snapshot-toggle')
+      const knob = document.getElementById('snapshot-toggle-knob')
+      if (val) {
+        track.classList.remove('bg-outline-variant')
+        track.classList.add('bg-primary')
+        knob.style.transform = 'translateX(16px)'
+      } else {
+        track.classList.add('bg-outline-variant')
+        track.classList.remove('bg-primary')
+        knob.style.transform = 'translateX(0)'
+      }
+    }
+  
+    function toggleInitialSnapshot() {
+      setSnapshotToggle(!wizardInitialSnapshot)
+    }
+  
+    // ==================== WIZARD CONFIRM ====================
+    function wizardConfirm() {
+      const name = document.getElementById('wizard-name-input').value.trim()
+      if (!name || !wizardPath) return
+      const game = { id: Date.now(), name, path: wizardPath, coverUrl: wizardCoverUrl || null }
+      games.push(game)
+      localStorage.setItem('respawn-games', JSON.stringify(games))
+  
+      if (wizardInitialSnapshot) {
+        ipcRenderer.invoke('run-python', 'create', [game.id, game.path]).then(() => {
+          closeAddGameModal()
+          renderGames()
+          loadRecentSnapshots()
+        })
+      } else {
+        closeAddGameModal()
+        renderGames()
+        loadRecentSnapshots()
+      }
+    }
+  
+    document.getElementById('add-game-card').addEventListener('click', openAddGameModal)
+  
+    // ==================== VAULT STATS ====================
+    function updateVaultStats() {
+      document.getElementById('stat-games').textContent = games.length
+      const promises = games.map(game =>
+        ipcRenderer.invoke('run-python', 'list', [game.id]).then(output =>
+          output.split('\n').filter(s => s.trim() !== '').length
+        )
+      )
+      Promise.all(promises).then(counts => {
+        document.getElementById('stat-snapshots').textContent = counts.reduce((a, b) => a + b, 0)
+      })
+    }
+  
+    // ==================== RECENT SNAPSHOTS ====================
+    function loadRecentSnapshots() {
+      const container = document.getElementById('recent-snapshots')
+      if (games.length === 0) {
+        container.innerHTML = `<div class="text-on-surface-variant text-sm font-body italic p-4">No snapshots yet. Add a game and take your first snapshot.</div>`
+        return
+      }
+      const promises = games.map(game =>
+        ipcRenderer.invoke('run-python', 'list', [game.id]).then(output => {
+          const snapshots = output.split('\n').filter(s => s.trim() !== '')
+          return snapshots.slice(0, 3).map(snapshot => ({ gameName: game.name, snapshot, gameId: game.id }))
+        })
+      )
+      Promise.all(promises).then(results => {
+        const all = results.flat().sort((a, b) => b.snapshot.localeCompare(a.snapshot))
+        const recent = all.slice(0, 5)
+        container.innerHTML = ''
+        if (recent.length === 0) {
+          container.innerHTML = `<div class="text-on-surface-variant text-sm font-body italic p-4">No snapshots yet. Add a game and take your first snapshot.</div>`
+          return
+        }
+        recent.forEach(item => {
+            const notes = JSON.parse(localStorage.getItem(`snapshot-notes-${item.gameId}`) || '{}')
+            const note = notes[item.snapshot] || ''
+            const el = document.createElement('div')
+            el.className = 'flex items-center justify-between p-4 bg-surface-container-lowest rounded border-b border-outline-variant/10 hover:bg-surface-container-low transition-colors'
+            el.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#53ddfc] flex-shrink-0"></div>
+                <div>
+                    <p class="font-body text-sm font-bold">${item.gameName}</p>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-wider font-label">${item.snapshot}</p>
+                    ${note ? `<p class="text-[11px] text-on-surface-variant font-body italic mt-0.5">${note}</p>` : ''}
+                </div>
+            </div>
+          `
+            container.appendChild(el)
+        })
+      })
+    }
+  
+    // ==================== INIT ====================
+    async function init() {
+        const config = await ipcRenderer.invoke('get-config')
+        RAWG_API_KEY = config.rawgApiKey
+        renderGames()
+        loadRecentSnapshots()
+    }
+    init()
+  </script>
 </body></html>

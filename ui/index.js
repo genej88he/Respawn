@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const { spawn } = require('child_process')
 const path = require('path')
+const fs = require('fs')
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -41,6 +42,11 @@ ipcMain.handle('run-python', async (event, command, args) => {
         process.on('close', () => resolve(output.trim()))
     })
 })
+
+ipcMain.handle('get-config', () => {
+    const configPath = path.join(__dirname, '..', 'config.json')
+    return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+  })
 
 app.whenReady().then(() => {
     createWindow()
