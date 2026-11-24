@@ -1,0 +1,358 @@
+<title>Respawn Rebuild</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a phase track that marks where the work is now, then the change table grouped by area. Colors follow the Respawn app (violet + cyan on near-black). */
+:root {
+  --bg: #f6f5fb;
+  --surface: #ffffff;
+  --surface-2: #eeecf6;
+  --fg: #18161f;
+  --muted: #5d5970;
+  --line: #dcd8ea;
+  --violet: #6b3fd4;
+  --violet-soft: #ece4ff;
+  --cyan: #00788c;
+  --cyan-soft: #dff6fb;
+  --done: #2f7d4f;
+  --done-soft: #e2f3e8;
+  --wait: #8a5a00;
+  --wait-soft: #fbf0d9;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e0e0e; --surface: #161618; --surface-2: #1f1f22; --fg: #f4f2f8; --muted: #aaa6b5; --line: #2c2b31;
+    --violet: #ba9eff; --violet-soft: #2a2340; --cyan: #53ddfc; --cyan-soft: #10313a;
+    --done: #6fd39a; --done-soft: #15301f; --wait: #f2c36b; --wait-soft: #33280f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e0e0e; --surface: #161618; --surface-2: #1f1f22; --fg: #f4f2f8; --muted: #aaa6b5; --line: #2c2b31;
+  --violet: #ba9eff; --violet-soft: #2a2340; --cyan: #53ddfc; --cyan-soft: #10313a;
+  --done: #6fd39a; --done-soft: #15301f; --wait: #f2c36b; --wait-soft: #33280f;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+}
+.wrap {
+  max-width: 960px; margin: 0 auto;
+  padding-block: 40px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 56px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.05rem; }
+p { margin: 0; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.lede { color: var(--muted); max-width: 62ch; font-size: 1.05rem; }
+section { display: flex; flex-direction: column; gap: 20px; }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
+
+/* Header */
+header { display: flex; flex-direction: column; gap: 14px; }
+.now {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 10px;
+  background: var(--violet-soft); color: var(--violet);
+  border: 1px solid var(--violet); border-radius: 999px; padding: 6px 14px;
+  font-family: var(--font-display); font-weight: 700; font-size: 14px;
+}
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 0 0 var(--violet); animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--violet) 60%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+@media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
+
+/* Why grid */
+.why { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.why-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.why-card ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.quote { border-left: 3px solid var(--cyan); padding-left: 14px; color: var(--fg); }
+
+.reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.reason { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.reason b { font-family: var(--font-display); }
+.reason span { color: var(--muted); font-size: 14px; }
+
+/* Phase track */
+.phases { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+.phase { display: grid; grid-template-columns: 44px 1fr; gap: 16px; position: relative; }
+.phase:not(:last-child)::before {
+  content: ""; position: absolute; left: 21px; top: 44px; bottom: -4px; width: 2px; background: var(--line);
+}
+.phase.done:not(:last-child)::before { background: var(--done); }
+.dot {
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 15px;
+  border: 2px solid var(--line); background: var(--surface); color: var(--muted); z-index: 1;
+}
+.phase.done .dot { border-color: var(--done); background: var(--done-soft); color: var(--done); }
+.phase.current .dot { border-color: var(--violet); background: var(--violet); color: var(--bg); }
+.phase-body { padding-bottom: 22px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.phase.current .phase-body {
+  background: var(--violet-soft); border: 1px solid var(--violet); border-radius: 10px; padding: 16px 18px; margin-bottom: 22px;
+}
+.phase-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 44px; }
+.phase.current .phase-head { min-height: 0; }
+.chip { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.chip.done { color: var(--done); }
+.chip.current { color: var(--violet); }
+.chip.next { color: var(--muted); }
+.phase-body p { color: var(--muted); }
+.phase.current .phase-body p { color: var(--fg); }
+.phase-body ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.phase.current .phase-body ul { color: var(--fg); }
+.brief { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+/* Change table */
+.group { display: flex; flex-direction: column; gap: 10px; }
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface-2); }
+td:first-child { font-weight: 600; width: 20%; }
+td.today { color: var(--muted); width: 26%; }
+td.after { width: 26%; }
+td.after::before { content: "→ "; color: var(--cyan); font-weight: 700; }
+.phase-tag { display: inline-block; margin-top: 4px; font-family: var(--font-mono); font-size: 11px; color: var(--violet); }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.box ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.box.wait { border-color: var(--wait); background: var(--wait-soft); }
+.metrics { width: 100%; border-collapse: collapse; min-width: 0; font-size: 14px; }
+.metrics td { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.metrics td:first-child { width: auto; font-weight: 500; }
+.metrics td:last-child { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; padding-left: 12px; }
+.metrics .known { color: var(--done); }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Respawn · game save backups · rebuild plan</p>
+    <h1>Respawn Rebuild</h1>
+    <p class="lede">Respawn keeps backups of your game saves so you can go back in time. This page tracks rebuilding it into an app real people can install, and then adding cloud backup.</p>
+    <div class="now" id="now-chip"><span class="pulse" aria-hidden="true"></span><span id="now-text">Now: Phase 1</span></div>
+  </header>
+
+  <section aria-labelledby="why-h">
+    <p class="eyebrow">Motivation</p>
+    <h2 id="why-h">Why this project</h2>
+    <div class="why">
+      <div class="why-card">
+        <h3>The goal</h3>
+        <p>Respawn is Gene's one main portfolio project for summer 2027 internships. It should show real experience building something with real users and real workloads.</p>
+        <ul>
+          <li>Backend / software engineering roles</li>
+          <li>Systems and embedded Linux roles</li>
+        </ul>
+      </div>
+      <div class="why-card">
+        <h3>The advice behind it</h3>
+        <p class="quote">An Amazon engineer said the best way for an intern to stand out is to build apps with real users (friends count), learn cloud, deployments, automated testing and beta/staging stages, and practice system design by designing each project yourself.</p>
+      </div>
+      <div class="why-card">
+        <h3>The rules we follow</h3>
+        <ul>
+          <li>One finished project with real users beats several half-finished ones.</li>
+          <li>Never make up numbers. Resume lines come only from things we measured.</li>
+          <li>No emulator inside Respawn. It's a save backup tool.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="reasons-h">
+    <p class="eyebrow">App improvement logic</p>
+    <h2 id="reasons-h">Why we're changing how it's built</h2>
+    <p class="lede">What the app does for you stays the same. The rebuild fixes five problems that would block real users and cloud backup.</p>
+    <div class="reasons">
+      <div class="reason"><b>One boss for the data</b><span>Today the screen keeps the game list and Python keeps the backups, and they can disagree. The backend will handle both.</span></div>
+      <div class="reason"><b>Never lose a save</b><span>Restore deletes your save before copying the backup in. If that fails halfway, the save is gone. We'll copy first, then swap.</span></div>
+      <div class="reason"><b>See every error</b><span>A failed restore still says "done" today. Errors will show up on screen.</span></div>
+      <div class="reason"><b>Easy for friends</b><span>Today every user needs Python installed. The new app is one language and a normal installer.</span></div>
+      <div class="reason"><b>Ready for the cloud</b><span>Cloud backup needs one place that knows about every game and backup. That's the new backend.</span></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="phases-h">
+    <p class="eyebrow">Roadmap</p>
+    <h2 id="phases-h">Phases</h2>
+    <ol class="phases" id="phases"></ol>
+  </section>
+
+  <section aria-labelledby="changes-h">
+    <p class="eyebrow">Today → after</p>
+    <h2 id="changes-h">Everything that changes</h2>
+    <div id="change-groups" style="display:flex;flex-direction:column;gap:28px"></div>
+  </section>
+
+  <section aria-labelledby="rest-h">
+    <h2 id="rest-h" class="eyebrow" style="font-family:var(--font-mono);font-size:12px">Also</h2>
+    <div class="two">
+      <div class="box">
+        <h3>What stays the same</h3>
+        <p>Add a game, take a backup, add a note, restore, delete. Everything on this page makes those safer, easier to share, and ready for cloud backup.</p>
+      </div>
+      <div class="box wait">
+        <h3>Removed or waiting</h3>
+        <ul>
+          <li>Old files (<code>main.py</code>, <code>preload.js</code>, the Python scripts, the old pages) are deleted once their replacements work.</li>
+          <li><b>Play (beta)</b>, the Ryujinx launcher, is set aside on its own branch (<code>experiment/play-beta</code>). A later test would use Dolphin instead.</li>
+          <li><b>Find Switch saves</b> stays. It's a backup feature, not emulation.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Numbers to collect</h3>
+        <table class="metrics">
+          <tr><td>Users today</td><td class="known">1 (Gene)</td></tr>
+          <tr><td>Save folder size, per game you play</td><td>not measured</td></tr>
+          <tr><td>How often saves change while playing</td><td>not measured</td></tr>
+          <tr><td>Backup and restore time, before / after</td><td>not measured</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Details live in the repo: <code>ARCHITECTURE.md</code> (how it works today), <code>ROADMAP.md</code> (the plan) and <code>CLAUDE.md</code> (goals). Last updated <span id="updated">2026-11-23 (Phase 1 finished)</span>.
+  </footer>
+</div>
+
+<script>
+// Move this number as the work progresses. Phases before it show as done.
+const CURRENT_PHASE = 2
+
+const PHASES = [
+  { n: 0, title: 'Map the current app', brief: 'Brief step 1',
+    text: 'Read all the code and write down how it works today.',
+    items: ['ARCHITECTURE.md written', 'Bugs found: unsafe restore, hidden errors, clashing backup names'] },
+  { n: 1, title: 'Set up the new structure', brief: 'Rebuild',
+    text: 'Create frontend/, backend/ and shared/. Get a React + TypeScript screen opening in Electron, with a safe list of allowed actions between the screen and the backend.',
+    items: ['frontend/: React + TypeScript, built with Vite', 'backend/: controllers and services in TypeScript', 'shared/: the list of allowed actions both sides use', 'Screen has no Node access; bad input is refused with a clear error', 'Electron upgraded from 41 to 45 to close known security holes', 'Old app in ui/ still works until its parts are replaced'] },
+  { n: 2, title: 'Rebuild the backup engine', brief: 'Rebuild + brief step 2 (tests)',
+    text: 'Move backup, restore and Find Switch saves from Python to TypeScript, fix the bugs, and add automatic tests.',
+    items: ['Safe restore (copy first, then swap)', 'Errors reach the screen; unique backup names', 'Game list and notes move into a small database (SQLite)', 'Jobs for the same game take turns'] },
+  { n: 3, title: 'Rebuild the screens in React', brief: 'Rebuild',
+    text: 'Library, Game, History and Settings pages in React. Make Settings actually work, then delete the old code.',
+    items: [] },
+  { n: 4, title: 'Auto-backups, CI and an installer', brief: 'Rebuild + brief step 2 (CI)',
+    text: 'Back up automatically when a save changes, run tests on Mac, Windows and Linux for every push, and build an installer to give friends.',
+    items: [] },
+  { n: 5, title: 'Design cloud backup on paper', brief: 'Brief step 3',
+    text: 'Requirements, API, data layout, rough numbers and what happens when things fail. Gene drafts, Claude reviews and pushes back.',
+    items: [] },
+  { n: 6, title: 'Build and deploy cloud backup', brief: 'Brief steps 4–5',
+    text: 'Sign-in, upload, list and restore. Deployed on a cloud free tier with separate test (staging) and real (production) versions, plus logs and metrics.',
+    items: [] },
+  { n: 7, title: 'Real users and measured results', brief: 'Brief steps 6–7',
+    text: 'Get friends and gaming communities using it, track users, uploads, storage, speed, errors and uptime, then write resume lines from those numbers.',
+    items: [] },
+]
+
+const CHANGES = [
+  { group: 'How it’s built', rows: [
+    ['Screen code', '4 hand-written web pages', 'React', 'Write each piece once (game card, popup) and reuse it', 1],
+    ['Backend language', 'Python', 'TypeScript', 'Whole app in one language; users don’t install Python', 2],
+    ['Folders', 'ui/ and Python files mixed at the top', 'frontend/, backend/, shared/', 'Clear layout, like a Spring Boot + React project', 1],
+    ['Styling', 'Tailwind downloaded from the internet each time', 'Tailwind installed with the app', 'App looks right even offline', 1],
+  ]},
+  { group: 'Where data lives', rows: [
+    ['Who’s in charge of the data', 'Screen keeps the list, Python keeps the copies', 'Backend handles both', 'One boss, so they always match', 2],
+    ['Game list and notes', 'Browser storage inside the screen', 'Small database file (SQLite)', 'The backend, and later cloud backup, can read it', 2],
+    ['Where save copies go', 'Inside the project folder', 'The app’s own data folder', 'Works once installed like a normal app', 2],
+  ]},
+  { group: 'Safety and mistakes', rows: [
+    ['Screen’s power', 'Screen can do anything on your computer', 'Screen can only use a short list of allowed actions', 'If something bad gets loaded, it can’t delete your files', 1],
+    ['Errors', 'Hidden: a failed restore still says “done”', 'Errors show up on screen', 'You know when something went wrong', 2],
+    ['Restore', 'Deletes your save first, then copies the backup in', 'Copies the backup in first, then swaps', 'If something fails halfway, you never lose your save', 2],
+    ['Backup names', 'Two backups in the same second clash', 'Every name is unique', 'No failed backups', 2],
+  ]},
+  { group: 'How it runs', rows: [
+    ['Doing a job', 'Starts a new Python program for every click', 'Backend is always running', 'Faster, and needed for automatic backups', 2],
+    ['Two jobs at once on one game', 'Can clash (backup while restoring)', 'Jobs for the same game wait their turn', 'No broken backups', 2],
+    ['Automatic backups', 'watcher.py is empty', 'Backs up when your save changes', 'Still part of the plan', 4],
+    ['Settings page', 'Looks real, does nothing', 'Actually works (backup folder, keep last N)', 'No fake buttons', 3],
+  ]},
+  { group: 'Quality and sharing', rows: [
+    ['Tests', 'None', 'Automatic tests', 'Catch bugs before you do', 2],
+    ['Checks on every push (CI)', 'None', 'GitHub runs the tests on Mac, Windows and Linux', 'Catch problems on computers you don’t own', 4],
+    ['Giving it to a friend', 'They’d need the code and Python', 'A normal installer', 'Real users, the goal of the project', 4],
+  ]},
+]
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag)
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') node.className = v
+    else if (k === 'text') node.textContent = v
+    else node.setAttribute(k, v)
+  }
+  for (const c of [].concat(children)) if (c) node.append(c)
+  return node
+}
+
+function renderPhases() {
+  const list = document.getElementById('phases')
+  list.replaceChildren()
+  for (const p of PHASES) {
+    const state = p.n < CURRENT_PHASE ? 'done' : p.n === CURRENT_PHASE ? 'current' : 'next'
+    const label = state === 'done' ? 'Done' : state === 'current' ? 'We are here' : 'Up next'
+    const body = el('div', { class: 'phase-body' }, [
+      el('div', { class: 'phase-head' }, [
+        el('h3', { text: `Phase ${p.n} · ${p.title}` }),
+        el('span', { class: `chip ${state}`, text: label }),
+      ]),
+      el('p', { text: p.text }),
+      p.items.length ? el('ul', {}, p.items.map(t => el('li', { text: t }))) : null,
+      el('span', { class: 'brief', text: p.brief }),
+    ])
+    const li = el('li', { class: `phase ${state}` }, [
+      el('div', { class: 'dot', 'aria-hidden': 'true', text: state === 'done' ? '✓' : String(p.n) }),
+      body,
+    ])
+    if (state === 'current') li.setAttribute('aria-current', 'step')
+    list.append(li)
+  }
+  const cur = PHASES.find(p => p.n === CURRENT_PHASE)
+  document.getElementById('now-text').textContent = cur ? `Now: Phase ${cur.n} · ${cur.title}` : 'All phases done'
+}
+
+function renderChanges() {
+  const root = document.getElementById('change-groups')
+  for (const g of CHANGES) {
+    const rows = g.rows.map(([what, today, after, why, phase]) =>
+      el('tr', {}, [
+        el('td', {}, [what, el('br'), el('span', { class: 'phase-tag', text: `Phase ${phase}` })]),
+        el('td', { class: 'today', text: today }),
+        el('td', { class: 'after', text: after }),
+        el('td', { text: why }),
+      ]))
+    root.append(el('div', { class: 'group' }, [
+      el('h3', { text: g.group }),
+      el('div', { class: 'table-scroll' }, [
+        el('table', {}, [
+          el('thead', {}, [el('tr', {}, ['What', 'Today', 'After', 'Why'].map(h => el('th', { text: h })))]),
+          el('tbody', {}, rows),
+        ]),
+      ]),
+    ]))
+  }
+}
+
+renderPhases()
+renderChanges()
+</script>
