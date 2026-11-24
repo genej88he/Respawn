@@ -1,0 +1,32 @@
+{
+  "name": "respawn",
+  "version": "0.1.0",
+  "description": "Version control for game save folders",
+  "private": true,
+  "main": "dist/backend/main.js",
+  "scripts": {
+    "postinstall": "install-electron",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run typecheck && vite build && node scripts/build-backend.mjs",
+    "start": "npm run build && electron .",
+    "typecheck": "tsc -p frontend --noEmit && tsc -p backend --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "electron": "^45.4.1",
+    "esbuild": "^0.28.2",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}

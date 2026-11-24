@@ -4,3 +4,6 @@ __pycache__/
 *.pyc
 ui/node_modules/
 config.json
+node_modules/
+dist/
+.DS_Store
