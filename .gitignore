@@ -3,3 +3,4 @@ snapshots/
 __pycache__/
 *.pyc
 ui/node_modules/
+config.json

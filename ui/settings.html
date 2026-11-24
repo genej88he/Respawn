@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Respawn | Settings</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-dim": "#d73357", "tertiary": "#ff97b5", "secondary-dim": "#40ceed",
+                        "on-secondary": "#004b58", "surface-container-high": "#20201f",
+                        "secondary-fixed-dim": "#48d4f3", "on-surface": "#ffffff",
+                        "inverse-primary": "#6e3bd7", "secondary": "#53ddfc",
+                        "surface-container-highest": "#262626", "error-container": "#a70138",
+                        "primary-fixed-dim": "#a27cff", "outline": "#767575",
+                        "primary-fixed": "#ae8dff", "primary": "#ba9eff",
+                        "on-primary-fixed": "#000000", "surface-dim": "#0e0e0e",
+                        "surface": "#0e0e0e", "primary-container": "#ae8dff",
+                        "secondary-container": "#00687a", "error": "#ff6e84",
+                        "surface-bright": "#2c2c2c", "surface-container-low": "#131313",
+                        "secondary-fixed": "#65e1ff", "surface-container-lowest": "#000000",
+                        "primary-dim": "#8455ef", "on-primary": "#39008c",
+                        "surface-tint": "#ba9eff", "background": "#0e0e0e",
+                        "outline-variant": "#484847", "on-surface-variant": "#adaaaa",
+                        "on-background": "#ffffff", "on-error": "#490013",
+                        "surface-container": "#1a1a1a", "surface-variant": "#262626"
+                    },
+                    borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+                    fontFamily: { headline: ["Space Grotesk"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0e0e0e; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #484847; border-radius: 10px; }
+      </style>
+</head>
+<body class="flex overflow-hidden h-screen bg-background text-on-surface">
+
+    <!-- SIDEBAR -->
+    <aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
+        <div class="px-6">
+            <div class="flex items-center gap-3">
+                <span class="text-violet-500 font-black text-2xl font-headline tracking-tighter">Respawn</span>
+                <span class="text-[10px] text-neutral-500 font-headline uppercase tracking-widest bg-neutral-800 px-1.5 py-0.5 rounded">V1.0.0</span>
+            </div>
+        </div>
+        <nav class="flex-1 flex flex-col gap-1">
+            <a onclick="window.location.href='index.html'" class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+                <span class="material-symbols-outlined">sports_esports</span><span>My Games</span>
+            </a>
+            <a onclick="window.location.href='history.html'" class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+                <span class="material-symbols-outlined">history</span><span>History</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest">
+                <span class="material-symbols-outlined">settings</span><span>Settings</span>
+            </a>
+            <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+                <span class="material-symbols-outlined">help_outline</span><span>Support</span>
+            </a>
+        </nav>
+        <div class="px-6 py-4 mt-auto">
+            <div class="flex items-center gap-3 text-neutral-500 text-[10px] font-headline uppercase tracking-widest">
+                <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+                <span>Sync Status</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow flex flex-col overflow-hidden bg-surface">
+
+        <!-- TOP NAV -->
+        <header class="w-full h-16 flex items-center px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10 flex-shrink-0">
+            <div class="flex items-center gap-2 text-neutral-400 font-headline text-xs tracking-wide">
+                <span class="cursor-pointer hover:text-white transition-colors" onclick="window.location.href='index.html'">LIBRARY</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+                <span class="text-violet-400 font-bold">SETTINGS</span>
+            </div>
+        </header>
+
+        <!-- SETTINGS CONTENT -->
+        <div class="flex-grow overflow-y-auto custom-scrollbar p-12">
+            <div class="max-w-6xl mx-auto">
+                <header class="mb-12">
+                    <h1 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Settings</h1>
+                    <p class="text-on-surface-variant font-body">Configure your local environment and snapshot behavior.</p>
+                </header>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                    <!-- GLOBAL SETTINGS -->
+                    <section class="lg:col-span-8 space-y-10">
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl">folder_open</span>
+                                <h2 class="font-headline text-xl font-bold uppercase tracking-widest">Global Settings</h2>
+                            </div>
+                            <div class="bg-surface-container-low p-6 rounded-xl space-y-6">
+
+                                <!-- Snapshot Directory -->
+                                <div>
+                                    <label class="block text-[10px] font-label uppercase tracking-widest text-on-surface-variant mb-2">Default Snapshot Directory</label>
+                                    <div class="flex gap-2">
+                                        <input id="snapshot-dir-input" class="flex-grow bg-surface-container-highest border-b-2 border-outline-variant text-on-surface p-3 font-body text-sm rounded-t focus:border-secondary transition-colors cursor-default" readonly type="text" value=""/>
+                                        <button id="change-dir-btn" class="bg-surface-bright hover:bg-neutral-700 px-4 py-2 rounded text-sm font-medium transition-colors border border-outline-variant/20">Change</button>
+                                    </div>
+                                </div>
+
+                                <!-- Auto Cleanup -->
+                                <div class="pt-4 border-t border-outline-variant/10">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="font-headline text-lg font-medium text-on-surface">Auto-Cleanup Rules</h3>
+                                            <p class="text-on-surface-variant text-sm">Automatically remove older snapshots when limit is reached.</p>
+                                        </div>
+                                        <div id="cleanup-toggle" onclick="toggleCleanup()" class="w-12 h-6 rounded-full relative flex items-center px-1 cursor-pointer transition-colors bg-outline-variant">
+                                            <div id="cleanup-knob" class="w-4 h-4 bg-white rounded-full absolute left-1 transition-all duration-300"></div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-surface-container p-4 rounded-lg flex items-center justify-between">
+                                        <span class="text-on-surface font-body text-sm">Keep maximum snapshots per game</span>
+                                        <div class="flex items-center gap-3">
+                                            <button onclick="adjustMax(-1)" class="w-8 h-8 rounded bg-surface-bright flex items-center justify-center hover:bg-neutral-700 transition-colors">
+                                                <span class="material-symbols-outlined text-sm">remove</span>
+                                            </button>
+                                            <span id="max-snapshots-display" class="font-headline font-bold text-secondary w-6 text-center">10</span>
+                                            <button onclick="adjustMax(1)" class="w-8 h-8 rounded bg-surface-bright flex items-center justify-center hover:bg-neutral-700 transition-colors">
+                                                <span class="material-symbols-outlined text-sm">add</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ABOUT -->
+                    <aside class="lg:col-span-4 space-y-6">
+                        <div class="bg-surface-container-high p-6 rounded-xl border-l-4 border-primary">
+                            <h2 class="font-headline text-xl font-bold uppercase tracking-widest mb-4">About Respawn</h2>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center py-2 border-b border-outline-variant/10">
+                                    <span class="text-on-surface-variant text-sm">Version</span>
+                                    <span class="text-on-surface font-mono text-sm">1.0.0</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2">
+                                    <span class="text-on-surface-variant text-sm">Build Date</span>
+                                    <span class="text-on-surface font-mono text-sm">2026.04.10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const { ipcRenderer } = require('electron')
+
+        // ==================== SNAPSHOT DIRECTORY ====================
+        const snapshotDirInput = document.getElementById('snapshot-dir-input')
+        
+        // Load saved directory or default
+        const savedDir = localStorage.getItem('snapshot-dir') || ''
+        snapshotDirInput.value = savedDir || 'Default (respawn/snapshots/)'
+
+        document.getElementById('change-dir-btn').addEventListener('click', () => {
+            ipcRenderer.invoke('select-folder').then(folderPath => {
+                if (!folderPath) return
+                localStorage.setItem('snapshot-dir', folderPath)
+                snapshotDirInput.value = folderPath
+            })
+        })
+
+        // ==================== AUTO CLEANUP TOGGLE ====================
+        let cleanupEnabled = localStorage.getItem('cleanup-enabled') === 'true'
+        let maxSnapshots = parseInt(localStorage.getItem('max-snapshots') || '10')
+
+        function updateCleanupUI() {
+            const toggle = document.getElementById('cleanup-toggle')
+            const knob = document.getElementById('cleanup-knob')
+            if (cleanupEnabled) {
+                toggle.classList.remove('bg-outline-variant')
+                toggle.classList.add('bg-secondary')
+                knob.style.transform = 'translateX(24px)'
+            } else {
+                toggle.classList.add('bg-outline-variant')
+                toggle.classList.remove('bg-secondary')
+                knob.style.transform = 'translateX(0)'
+            }
+            document.getElementById('max-snapshots-display').textContent = maxSnapshots
+        }
+
+        function toggleCleanup() {
+            cleanupEnabled = !cleanupEnabled
+            localStorage.setItem('cleanup-enabled', cleanupEnabled)
+            updateCleanupUI()
+        }
+
+        function adjustMax(delta) {
+            maxSnapshots = Math.max(1, Math.min(50, maxSnapshots + delta))
+            localStorage.setItem('max-snapshots', maxSnapshots)
+            updateCleanupUI()
+        }
+
+        updateCleanupUI()
+    </script>
+
+</body>
+</html>
