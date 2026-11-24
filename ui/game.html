@@ -57,7 +57,8 @@
 <div class="flex min-h-screen overflow-hidden">
 
 <!-- SIDEBAR -->
-<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 z-50 flex-shrink-0">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
   <div class="px-6">
     <div class="flex items-center gap-3">
       <span class="text-violet-500 font-black text-2xl font-headline tracking-tighter">Respawn</span>
@@ -65,13 +66,16 @@
     </div>
   </div>
   <nav class="flex-1 flex flex-col gap-1">
-    <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all font-headline text-sm uppercase tracking-widest" href="#">
+    <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="index.html">
       <span class="material-symbols-outlined">sports_esports</span><span>My Games</span>
     </a>
-    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all font-headline text-sm uppercase tracking-widest" href="index.html">
+    <a onclick="window.location.href='history.html'" class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+        <span class="material-symbols-outlined">history</span><span>History</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="settings.html">
       <span class="material-symbols-outlined">settings</span><span>Settings</span>
     </a>
-    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all font-headline text-sm uppercase tracking-widest" href="#">
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
       <span class="material-symbols-outlined">help_outline</span><span>Support</span>
     </a>
   </nav>
@@ -381,7 +385,16 @@
   }
 
   // ==================== RESTORE ====================
-  function restoreSnapshot(snapshotName) {
+  async function restoreSnapshot(snapshotName) {
+    // Ryujinx holds the save open while it runs and would overwrite a restore
+    // with its own copy when the game saves or exits.
+    if (game.platform === 'switch') {
+      const running = await ipcRenderer.invoke('switch-saves', 'running', []).catch(() => 'no')
+      if (running === 'yes') {
+        alert('Close Ryujinx before restoring a Switch save. Otherwise the emulator will overwrite the restored save.')
+        return
+      }
+    }
     ipcRenderer.invoke('run-python', 'restore', [game.id, snapshotName, game.path]).then(() => {
       currentSnapshot = snapshotName
       localStorage.setItem(`current-snapshot-${game.id}`, snapshotName)

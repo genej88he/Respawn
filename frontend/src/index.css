@@ -1,0 +1,32 @@
+/* Tailwind, installed with the app (no internet needed), using the colors and
+   fonts from the old Respawn screens. */
+@import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+
+@theme {
+  --font-headline: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --color-surface: #0e0e0e;
+  --color-surface-container-low: #131313;
+  --color-surface-container: #1a1a1a;
+  --color-surface-container-high: #20201f;
+  --color-surface-container-highest: #262626;
+  --color-surface-bright: #2c2c2c;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #adaaaa;
+  --color-outline: #767575;
+  --color-outline-variant: #484847;
+
+  --color-primary: #ba9eff;
+  --color-primary-dim: #8455ef;
+  --color-on-primary: #39008c;
+  --color-secondary: #53ddfc;
+  --color-on-secondary: #004b58;
+  --color-error: #ff6e84;
+}
+
+html, body, #root { height: 100%; }

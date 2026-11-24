@@ -66,7 +66,10 @@
     <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
       <span class="material-symbols-outlined">sports_esports</span><span>My Games</span>
     </a>
-    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+    <a onclick="window.location.href='history.html'" class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+        <span class="material-symbols-outlined">history</span><span>History</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="settings.html">
       <span class="material-symbols-outlined">settings</span><span>Settings</span>
     </a>
     <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
@@ -83,30 +86,15 @@
 
 <!-- Main Content -->
 <main class="flex-grow flex flex-col overflow-hidden bg-surface">
-  <header class="w-full h-12 flex items-center justify-between px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
-    <div class="flex items-center gap-4">
-      <span class="text-xl font-bold tracking-tighter text-neutral-100">DASHBOARD</span>
-    </div>
-    <div class="flex items-center gap-2">
-      <div class="flex items-center bg-neutral-900 rounded px-2 h-8 mr-4 border-b border-outline-variant/15">
-        <span class="material-symbols-outlined text-neutral-500 text-sm">search</span>
-        <input class="bg-transparent border-none focus:ring-0 text-xs text-on-surface w-48 font-body" placeholder="Search Vault..." type="text"/>
-      </div>
-      <div class="flex gap-1">
-        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-          <span class="material-symbols-outlined text-sm">remove</span>
-        </button>
-        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-          <span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
-        </button>
-        <button class="p-1 text-neutral-400 hover:bg-neutral-800 transition-colors cursor-pointer active:opacity-80">
-          <span class="material-symbols-outlined text-sm">close</span>
-        </button>
-      </div>
+  <header class="w-full h-24 flex items-center justify-between px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
+    <div class="flex items-center gap-2 text-neutral-400 font-headline text-xs tracking-wide">
+      <span class="cursor-pointer hover:text-white transition-colors" onclick="window.location.href='index.html'">LIBRARY</span>
+      <span class="material-symbols-outlined text-xs">chevron_right</span>
+      <span class="text-violet-400 font-bold">HISTORY</span>
     </div>
   </header>
 
-  <div class="flex-grow overflow-y-auto p-12">
+  <div class="flex-grow overflow-y-auto custom-scrollbar pt-16 px-12 pb-12">
     <div class="max-w-6xl mx-auto">
       <div class="mb-10">
         <h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Tracked Games</h2>
@@ -129,7 +117,7 @@
         <div class="lg:col-span-2">
           <div class="flex items-center justify-between mb-6">
             <h3 class="font-headline text-2xl font-bold">Recent Snapshots</h3>
-            <button class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All History</button>
+            <button onclick="window.location.href='history.html'" class="text-primary text-xs font-bold uppercase tracking-widest hover:underline">View All History</button>
           </div>
           <div class="space-y-3" id="recent-snapshots"></div>
         </div>
@@ -221,6 +209,15 @@
                     <span class="material-symbols-outlined text-sm">folder_open</span> Browse
                 </button>
                 </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                <label class="text-[10px] uppercase tracking-widest text-secondary font-bold">Nintendo Switch (Ryujinx / Ryubing)</label>
+                <button id="wizard-switch-scan-btn" class="text-xs font-headline font-semibold text-primary hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">sports_esports</span> Find Switch saves
+                </button>
+                </div>
+                <div id="wizard-switch-results" class="space-y-2 max-h-40 overflow-y-auto"></div>
             </div>
             </div>
             <div class="flex items-center justify-between pt-8 border-t border-outline-variant/10 mt-8">
@@ -528,6 +525,8 @@
       wizardPath = ''
       wizardCoverUrl = ''
       wizardInitialSnapshot = false
+      wizardSwitch = null
+      document.getElementById('wizard-switch-results').innerHTML = ''
       document.getElementById('wizard-path-input').value = ''
       document.getElementById('wizard-name-input').value = ''
       document.getElementById('wizard-art-search').value = ''
@@ -593,6 +592,8 @@
       ipcRenderer.invoke('select-folder').then(folderPath => {
         if (!folderPath) return
         wizardPath = folderPath
+        wizardSwitch = null
+        document.querySelectorAll('.switch-save-row').forEach(r => r.classList.replace('border-primary', 'border-transparent'))
         document.getElementById('wizard-path-input').value = folderPath
         document.getElementById('wizard-path-preview').textContent = folderPath
         const folderName = folderPath.split(/[\\/]/).pop()
@@ -601,6 +602,60 @@
       })
     })
   
+    // ==================== SWITCH (RYUJINX) SAVES ====================
+    let wizardSwitch = null // { titleId } when the folder came from the Switch scan
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+    }
+
+    async function scanSwitchSaves() {
+      const resultsEl = document.getElementById('wizard-switch-results')
+      resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">Looking for Ryujinx saves...</p>'
+      let data
+      try {
+        data = JSON.parse(await ipcRenderer.invoke('switch-saves', 'scan', []))
+      } catch (e) {
+        resultsEl.innerHTML = '<p class="text-xs text-error font-body">Could not read Ryujinx saves.</p>'
+        return
+      }
+      if (!data.dataDir) {
+        resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">No Ryujinx data folder found. Open a game in Ryujinx once, then try again.</p>'
+        return
+      }
+      const tracked = new Set(games.map(g => g.path))
+      const found = data.games.filter(g => !tracked.has(g.path))
+      if (found.length === 0) {
+        resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">No new Switch saves found.</p>'
+        return
+      }
+      resultsEl.innerHTML = ''
+      found.forEach(g => {
+        const row = document.createElement('button')
+        row.className = 'switch-save-row w-full text-left flex items-center justify-between gap-3 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent transition-colors'
+        row.innerHTML = `
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-on-surface truncate">${escapeHtml(g.name)}</p>
+            <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-label">${escapeHtml(g.titleId)} · ${(g.sizeBytes / 1048576).toFixed(1)} MB</p>
+          </div>
+          <span class="material-symbols-outlined text-sm text-on-surface-variant">chevron_right</span>
+        `
+        row.addEventListener('click', () => {
+          document.querySelectorAll('.switch-save-row').forEach(r => r.classList.replace('border-primary', 'border-transparent'))
+          row.classList.replace('border-transparent', 'border-primary')
+          wizardPath = g.path
+          wizardSwitch = { titleId: g.titleId }
+          document.getElementById('wizard-path-input').value = g.path
+          document.getElementById('wizard-path-preview').textContent = g.path
+          document.getElementById('wizard-name-input').value = g.name
+          document.getElementById('wizard-step1-next').disabled = false
+        })
+        resultsEl.appendChild(row)
+      })
+    }
+
+    document.getElementById('wizard-switch-scan-btn').addEventListener('click', scanSwitchSaves)
+
     // ==================== RAWG ART SEARCH ====================
     async function searchGameArt() {
       const query = document.getElementById('wizard-art-search').value.trim()
@@ -685,6 +740,10 @@
       const name = document.getElementById('wizard-name-input').value.trim()
       if (!name || !wizardPath) return
       const game = { id: Date.now(), name, path: wizardPath, coverUrl: wizardCoverUrl || null }
+      if (wizardSwitch) {
+        game.platform = 'switch'
+        game.titleId = wizardSwitch.titleId
+      }
       games.push(game)
       localStorage.setItem('respawn-games', JSON.stringify(games))
   

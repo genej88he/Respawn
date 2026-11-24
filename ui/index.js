@@ -11,7 +11,7 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false
         },
-        titleBarStyle: 'hiddenInset',
+        titleBarStyle: 'hidden',
         backgroundColor: '#0e0e0e',
         show: false
     })
@@ -40,6 +40,23 @@ ipcMain.handle('run-python', async (event, command, args) => {
         let output = ''
         process.stdout.on('data', (data) => { output += data.toString() })
         process.on('close', () => resolve(output.trim()))
+    })
+})
+
+// Nintendo Switch saves from the Ryujinx / Ryubing emulator (switch_saves.py)
+ipcMain.handle('switch-saves', async (event, command, args = []) => {
+    return new Promise((resolve, reject) => {
+        const child = spawn('python3', [
+            path.join(__dirname, '..', 'switch_saves.py'),
+            command,
+            ...args
+        ])
+        let output = ''
+        let error = ''
+        child.stdout.on('data', (data) => { output += data.toString() })
+        child.stderr.on('data', (data) => { error += data.toString() })
+        child.on('error', reject)
+        child.on('close', (code) => code === 0 ? resolve(output.trim()) : reject(new Error(error.trim())))
     })
 })
 

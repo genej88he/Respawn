@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Respawn | History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "error-dim": "#d73357", "tertiary": "#ff97b5", "secondary-dim": "#40ceed",
+          "on-secondary": "#004b58", "surface-container-high": "#20201f",
+          "secondary-fixed-dim": "#48d4f3", "on-surface": "#ffffff",
+          "inverse-primary": "#6e3bd7", "secondary": "#53ddfc",
+          "surface-container-highest": "#262626", "error-container": "#a70138",
+          "on-tertiary-fixed": "#380018", "on-secondary-fixed-variant": "#005969",
+          "primary-fixed-dim": "#a27cff", "outline": "#767575",
+          "tertiary-fixed": "#ff8eb0", "primary-fixed": "#ae8dff",
+          "primary": "#ba9eff", "on-primary-fixed": "#000000",
+          "surface-dim": "#0e0e0e", "tertiary-container": "#fd81a8",
+          "surface": "#0e0e0e", "primary-container": "#ae8dff",
+          "secondary-container": "#00687a", "error": "#ff6e84",
+          "surface-bright": "#2c2c2c", "tertiary-dim": "#f0779d",
+          "surface-container-low": "#131313", "on-error-container": "#ffb2b9",
+          "on-tertiary-container": "#59002a", "on-secondary-container": "#ecfaff",
+          "secondary-fixed": "#65e1ff", "surface-container-lowest": "#000000",
+          "inverse-surface": "#fcf9f8", "primary-dim": "#8455ef",
+          "on-primary": "#39008c", "on-primary-fixed-variant": "#370086",
+          "tertiary-fixed-dim": "#f67ca3", "on-tertiary": "#6a0934",
+          "surface-tint": "#ba9eff", "background": "#0e0e0e",
+          "on-primary-container": "#2b006e", "on-secondary-fixed": "#003a45",
+          "outline-variant": "#484847", "inverse-on-surface": "#565555",
+          "on-tertiary-fixed-variant": "#701039", "on-surface-variant": "#adaaaa",
+          "on-background": "#ffffff", "on-error": "#490013",
+          "surface-container": "#1a1a1a", "surface-variant": "#262626"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        fontFamily: { headline: ["Space Grotesk"], body: ["Inter"], label: ["Inter"] }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #0e0e0e; color: #ffffff; font-family: 'Inter', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #0e0e0e; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #484847; border-radius: 10px; }
+</style>
+</head>
+<body class="flex overflow-hidden h-screen bg-background text-on-surface">
+
+<!-- SIDEBAR -->
+<!-- SideNavBar -->
+<aside class="h-screen w-64 flex flex-col bg-neutral-900 shadow-2xl shadow-black/50 py-6 gap-8 flex-shrink-0 z-20">
+  <div class="px-6">
+    <div class="flex items-center gap-3">
+      <span class="text-violet-500 font-black text-2xl font-headline tracking-tighter">Respawn</span>
+      <span class="text-[10px] text-neutral-500 font-headline uppercase tracking-widest bg-neutral-800 px-1.5 py-0.5 rounded">V1.0.0</span>
+    </div>
+  </div>
+  <nav class="flex-1 flex flex-col gap-1">
+    <a onclick="window.location.href='index.html'" class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest cursor-pointer">
+      <span class="material-symbols-outlined">sports_esports</span><span>My Games</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-violet-400 border-r-2 border-violet-500 bg-neutral-800/50 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest">
+        <span class="material-symbols-outlined">history</span><span>History</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="settings.html">
+      <span class="material-symbols-outlined">settings</span><span>Settings</span>
+    </a>
+    <a class="flex items-center gap-3 px-6 py-3 text-neutral-500 hover:text-neutral-100 hover:bg-neutral-800 transition-all duration-300 ease-in-out font-headline text-sm uppercase tracking-widest" href="#">
+      <span class="material-symbols-outlined">help_outline</span><span>Support</span>
+    </a>
+  </nav>
+  <div class="px-6 py-4 mt-auto">
+    <div class="flex items-center gap-3 text-neutral-500 text-[10px] font-headline uppercase tracking-widest">
+      <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">cloud_done</span>
+      <span>Sync Status</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-grow flex flex-col overflow-hidden bg-surface">
+  <header class="w-full h-12 flex items-center justify-between px-4 bg-neutral-950 font-['Space_Grotesk'] tracking-wide z-10">
+    <div class="flex items-center gap-2 text-neutral-400 font-headline text-xs tracking-wide">
+      <span class="cursor-pointer hover:text-white transition-colors" onclick="window.location.href='index.html'">LIBRARY</span>
+      <span class="material-symbols-outlined text-xs">chevron_right</span>
+      <span class="text-violet-400 font-bold">HISTORY</span>
+    </div>
+  </header>
+
+  <div class="flex-grow overflow-y-auto custom-scrollbar p-12">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Header + toggle -->
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <h2 class="font-headline text-5xl font-bold tracking-tight text-on-surface mb-2">Vault History</h2>
+          <p class="font-body text-on-surface-variant">All snapshots across your tracked games.</p>
+        </div>
+        <!-- View toggle -->
+        <div class="flex items-center bg-surface-container rounded-lg p-1 gap-1">
+          <button id="btn-grouped" onclick="setView('grouped')"
+            class="flex items-center gap-2 px-4 py-2 rounded text-xs font-headline uppercase tracking-widest transition-all bg-surface-bright text-on-surface">
+            <span class="material-symbols-outlined text-sm">folder</span> Grouped
+          </button>
+          <button id="btn-chronological" onclick="setView('chronological')"
+            class="flex items-center gap-2 px-4 py-2 rounded text-xs font-headline uppercase tracking-widest transition-all text-on-surface-variant hover:text-on-surface">
+            <span class="material-symbols-outlined text-sm">timeline</span> Chronological
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="grid grid-cols-3 gap-4 mb-10">
+        <div class="bg-surface-container rounded-lg p-4 flex items-center gap-3">
+          <span class="material-symbols-outlined text-secondary">folder</span>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Tracked Games</p>
+            <p class="font-headline font-bold text-lg text-secondary" id="stat-games">0</p>
+          </div>
+        </div>
+        <div class="bg-surface-container rounded-lg p-4 flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary">history</span>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">Total Snapshots</p>
+            <p class="font-headline font-bold text-lg text-primary" id="stat-snapshots">0</p>
+          </div>
+        </div>
+        <div class="bg-surface-container rounded-lg p-4 flex items-center gap-3">
+          <span class="material-symbols-outlined text-tertiary">edit_note</span>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-label">With Notes</p>
+            <p class="font-headline font-bold text-lg text-tertiary" id="stat-notes">0</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div id="history-content"></div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  const { ipcRenderer } = require('electron')
+
+  const games = JSON.parse(localStorage.getItem('respawn-games') || '[]')
+  let currentView = 'grouped'
+  let allData = [] // [{ game, snapshot, note }]
+
+  function getNotes(gameId) {
+    return JSON.parse(localStorage.getItem(`snapshot-notes-${gameId}`) || '{}')
+  }
+
+  function goToGame(game) {
+    localStorage.setItem('selected-game', JSON.stringify(game))
+    window.location.href = 'game.html'
+  }
+
+  function setView(view) {
+    currentView = view
+    // Toggle button styles
+    document.getElementById('btn-grouped').className = `flex items-center gap-2 px-4 py-2 rounded text-xs font-headline uppercase tracking-widest transition-all ${view === 'grouped' ? 'bg-surface-bright text-on-surface' : 'text-on-surface-variant hover:text-on-surface'}`
+    document.getElementById('btn-chronological').className = `flex items-center gap-2 px-4 py-2 rounded text-xs font-headline uppercase tracking-widest transition-all ${view === 'chronological' ? 'bg-surface-bright text-on-surface' : 'text-on-surface-variant hover:text-on-surface'}`
+    renderContent()
+  }
+
+  function renderSnapshotRow(item) {
+    const div = document.createElement('div')
+    div.className = 'flex items-center justify-between p-4 bg-surface-container-low hover:bg-surface-container rounded-lg border border-transparent hover:border-outline-variant/20 transition-all cursor-pointer group'
+    div.onclick = () => goToGame(item.game)
+    div.innerHTML = `
+      <div class="flex items-center gap-4">
+        <div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#53ddfc] flex-shrink-0"></div>
+        <div>
+          <p class="font-headline font-bold text-sm text-on-surface">${item.snapshot}</p>
+          ${item.note ? `<p class="text-[11px] text-on-surface-variant font-body italic mt-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-xs">edit_note</span>${item.note}</p>` : ''}
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        ${currentView === 'chronological' ? `<span class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest bg-surface-container px-2 py-1 rounded">${item.game.name}</span>` : ''}
+        <span class="material-symbols-outlined text-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+      </div>
+    `
+    return div
+  }
+
+  function renderContent() {
+    const container = document.getElementById('history-content')
+    container.innerHTML = ''
+
+    if (allData.length === 0) {
+      container.innerHTML = `<div class="text-on-surface-variant text-sm font-body italic p-4">No snapshots yet.</div>`
+      return
+    }
+
+    if (currentView === 'chronological') {
+      // Flat list sorted newest first
+      const sorted = [...allData].sort((a, b) => b.snapshot.localeCompare(a.snapshot))
+      const list = document.createElement('div')
+      list.className = 'space-y-2'
+      sorted.forEach(item => list.appendChild(renderSnapshotRow(item)))
+      container.appendChild(list)
+
+    } else {
+      // Grouped by game
+      games.forEach(game => {
+        const gameItems = allData.filter(d => d.game.id === game.id)
+        if (gameItems.length === 0) return
+
+        const section = document.createElement('div')
+        section.className = 'mb-8'
+
+        // Game header
+        const header = document.createElement('div')
+        header.className = 'flex items-center gap-3 mb-3 cursor-pointer group'
+        header.onclick = () => goToGame(game)
+        header.innerHTML = `
+          <div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center flex-shrink-0 overflow-hidden">
+            ${game.coverUrl
+              ? `<img src="${game.coverUrl}" class="w-full h-full object-cover"/>`
+              : `<span class="material-symbols-outlined text-sm text-on-surface-variant">sports_esports</span>`}
+          </div>
+          <h3 class="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">${game.name}</h3>
+          <span class="text-[10px] text-on-surface-variant font-label uppercase tracking-widest">${gameItems.length} snapshot${gameItems.length !== 1 ? 's' : ''}</span>
+          <span class="material-symbols-outlined text-sm text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+        `
+
+        const list = document.createElement('div')
+        list.className = 'space-y-2 pl-4 border-l border-outline-variant/20'
+        gameItems.forEach(item => list.appendChild(renderSnapshotRow(item)))
+
+        section.appendChild(header)
+        section.appendChild(list)
+        container.appendChild(section)
+      })
+    }
+  }
+
+  async function loadAll() {
+    let totalSnapshots = 0
+    let totalNotes = 0
+    allData = []
+
+    const promises = games.map(game =>
+      ipcRenderer.invoke('run-python', 'list', [game.id]).then(output => {
+        const snapshots = output.split('\n').filter(s => s.trim() !== '')
+        const notes = getNotes(game.id)
+        snapshots.forEach(snapshot => {
+          const note = notes[snapshot] || ''
+          if (note) totalNotes++
+          allData.push({ game, snapshot, note })
+        })
+        totalSnapshots += snapshots.length
+      })
+    )
+
+    await Promise.all(promises)
+
+    document.getElementById('stat-games').textContent = games.length
+    document.getElementById('stat-snapshots').textContent = totalSnapshots
+    document.getElementById('stat-notes').textContent = totalNotes
+
+    renderContent()
+  }
+
+  loadAll()
+</script>
+</body></html>
