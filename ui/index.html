@@ -210,6 +210,15 @@
                 </button>
                 </div>
             </div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                <label class="text-[10px] uppercase tracking-widest text-secondary font-bold">Nintendo Switch (Ryujinx / Ryubing)</label>
+                <button id="wizard-switch-scan-btn" class="text-xs font-headline font-semibold text-primary hover:underline flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">sports_esports</span> Find Switch saves
+                </button>
+                </div>
+                <div id="wizard-switch-results" class="space-y-2 max-h-40 overflow-y-auto"></div>
+            </div>
             </div>
             <div class="flex items-center justify-between pt-8 border-t border-outline-variant/10 mt-8">
             <button onclick="closeAddGameModal()" class="text-on-surface-variant hover:text-on-surface text-sm font-headline font-medium transition-colors flex items-center gap-2">
@@ -516,6 +525,8 @@
       wizardPath = ''
       wizardCoverUrl = ''
       wizardInitialSnapshot = false
+      wizardSwitch = null
+      document.getElementById('wizard-switch-results').innerHTML = ''
       document.getElementById('wizard-path-input').value = ''
       document.getElementById('wizard-name-input').value = ''
       document.getElementById('wizard-art-search').value = ''
@@ -581,6 +592,8 @@
       ipcRenderer.invoke('select-folder').then(folderPath => {
         if (!folderPath) return
         wizardPath = folderPath
+        wizardSwitch = null
+        document.querySelectorAll('.switch-save-row').forEach(r => r.classList.replace('border-primary', 'border-transparent'))
         document.getElementById('wizard-path-input').value = folderPath
         document.getElementById('wizard-path-preview').textContent = folderPath
         const folderName = folderPath.split(/[\\/]/).pop()
@@ -589,6 +602,60 @@
       })
     })
   
+    // ==================== SWITCH (RYUJINX) SAVES ====================
+    let wizardSwitch = null // { titleId } when the folder came from the Switch scan
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
+    }
+
+    async function scanSwitchSaves() {
+      const resultsEl = document.getElementById('wizard-switch-results')
+      resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">Looking for Ryujinx saves...</p>'
+      let data
+      try {
+        data = JSON.parse(await ipcRenderer.invoke('switch-saves', 'scan', []))
+      } catch (e) {
+        resultsEl.innerHTML = '<p class="text-xs text-error font-body">Could not read Ryujinx saves.</p>'
+        return
+      }
+      if (!data.dataDir) {
+        resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">No Ryujinx data folder found. Open a game in Ryujinx once, then try again.</p>'
+        return
+      }
+      const tracked = new Set(games.map(g => g.path))
+      const found = data.games.filter(g => !tracked.has(g.path))
+      if (found.length === 0) {
+        resultsEl.innerHTML = '<p class="text-xs text-on-surface-variant font-body">No new Switch saves found.</p>'
+        return
+      }
+      resultsEl.innerHTML = ''
+      found.forEach(g => {
+        const row = document.createElement('button')
+        row.className = 'switch-save-row w-full text-left flex items-center justify-between gap-3 p-3 rounded-lg bg-surface-container-low hover:bg-surface-container border border-transparent transition-colors'
+        row.innerHTML = `
+          <div class="min-w-0">
+            <p class="text-sm font-bold text-on-surface truncate">${escapeHtml(g.name)}</p>
+            <p class="text-[10px] uppercase tracking-wider text-on-surface-variant font-label">${escapeHtml(g.titleId)} · ${(g.sizeBytes / 1048576).toFixed(1)} MB</p>
+          </div>
+          <span class="material-symbols-outlined text-sm text-on-surface-variant">chevron_right</span>
+        `
+        row.addEventListener('click', () => {
+          document.querySelectorAll('.switch-save-row').forEach(r => r.classList.replace('border-primary', 'border-transparent'))
+          row.classList.replace('border-transparent', 'border-primary')
+          wizardPath = g.path
+          wizardSwitch = { titleId: g.titleId }
+          document.getElementById('wizard-path-input').value = g.path
+          document.getElementById('wizard-path-preview').textContent = g.path
+          document.getElementById('wizard-name-input').value = g.name
+          document.getElementById('wizard-step1-next').disabled = false
+        })
+        resultsEl.appendChild(row)
+      })
+    }
+
+    document.getElementById('wizard-switch-scan-btn').addEventListener('click', scanSwitchSaves)
+
     // ==================== RAWG ART SEARCH ====================
     async function searchGameArt() {
       const query = document.getElementById('wizard-art-search').value.trim()
@@ -673,6 +740,10 @@
       const name = document.getElementById('wizard-name-input').value.trim()
       if (!name || !wizardPath) return
       const game = { id: Date.now(), name, path: wizardPath, coverUrl: wizardCoverUrl || null }
+      if (wizardSwitch) {
+        game.platform = 'switch'
+        game.titleId = wizardSwitch.titleId
+      }
       games.push(game)
       localStorage.setItem('respawn-games', JSON.stringify(games))
   

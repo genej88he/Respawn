@@ -385,7 +385,16 @@
   }
 
   // ==================== RESTORE ====================
-  function restoreSnapshot(snapshotName) {
+  async function restoreSnapshot(snapshotName) {
+    // Ryujinx holds the save open while it runs and would overwrite a restore
+    // with its own copy when the game saves or exits.
+    if (game.platform === 'switch') {
+      const running = await ipcRenderer.invoke('switch-saves', 'running', []).catch(() => 'no')
+      if (running === 'yes') {
+        alert('Close Ryujinx before restoring a Switch save. Otherwise the emulator will overwrite the restored save.')
+        return
+      }
+    }
     ipcRenderer.invoke('run-python', 'restore', [game.id, snapshotName, game.path]).then(() => {
       currentSnapshot = snapshotName
       localStorage.setItem(`current-snapshot-${game.id}`, snapshotName)

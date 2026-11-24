@@ -43,6 +43,23 @@ ipcMain.handle('run-python', async (event, command, args) => {
     })
 })
 
+// Nintendo Switch saves from the Ryujinx / Ryubing emulator (switch_saves.py)
+ipcMain.handle('switch-saves', async (event, command, args = []) => {
+    return new Promise((resolve, reject) => {
+        const child = spawn('python3', [
+            path.join(__dirname, '..', 'switch_saves.py'),
+            command,
+            ...args
+        ])
+        let output = ''
+        let error = ''
+        child.stdout.on('data', (data) => { output += data.toString() })
+        child.stderr.on('data', (data) => { error += data.toString() })
+        child.on('error', reject)
+        child.on('close', (code) => code === 0 ? resolve(output.trim()) : reject(new Error(error.trim())))
+    })
+})
+
 ipcMain.handle('get-config', () => {
     const configPath = path.join(__dirname, '..', 'config.json')
     return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
