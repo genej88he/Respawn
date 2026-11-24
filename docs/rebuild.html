@@ -137,6 +137,24 @@ td.after::before { content: "→ "; color: var(--cyan); font-weight: 700; }
 .metrics td:last-child { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--muted); white-space: nowrap; padding-left: 12px; }
 .metrics .known { color: var(--done); }
 footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* Code changes section */
+.changes { display: flex; flex-direction: column; gap: 28px; }
+.change { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.change-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.idea { font-family: var(--font-mono); font-size: 12px; color: var(--cyan); }
+.code-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 760px) { .code-pair { grid-template-columns: 1fr; } }
+.code { margin: 0; min-width: 0; display: flex; flex-direction: column; border-radius: 8px; border: 1px solid var(--line); overflow: hidden; }
+.code figcaption { display: flex; align-items: center; gap: 8px; padding: 8px 12px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.code .tag { font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; }
+.code.before .tag { color: var(--wait); }
+.code.after .tag { color: var(--done); }
+.code pre { margin: 0; padding: 12px; overflow-x: auto; flex: 1; background: var(--bg); }
+.code pre code { background: none; padding: 0; font-size: 12.5px; line-height: 1.55; white-space: pre; }
+.explain { display: flex; flex-direction: column; gap: 6px; max-width: 75ch; }
+.commits { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.muted { color: var(--muted); }
 </style>
 
 <div class="wrap">
@@ -200,6 +218,385 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
     <div id="change-groups" style="display:flex;flex-direction:column;gap:28px"></div>
   </section>
 
+<!-- CODE-CHANGES:START -->
+  <section aria-labelledby="code-h">
+    <p class="eyebrow">Done so far, in code</p>
+    <h2 id="code-h">What changed in the code</h2>
+    <p class="lede">The table above is the plan. This section shows what has actually changed so far: the old code, the new code, and the system design idea behind each change.</p>
+    <div class="changes">
+      <article class="change">
+        <div class="change-head">
+          <h3>How the screen talks to the backend</h3>
+          <span class="idea">Least privilege: give each part only the power it needs</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.js + ui/index.html (old app)</figcaption>
+            <pre><code>// ui/index.js — window settings
+webPreferences: {
+    nodeIntegration: true,     // page gets all of Node.js
+    contextIsolation: false
+}
+
+// ui/index.html — the page talks to the backend directly
+const { ipcRenderer } = require(&#x27;electron&#x27;)
+ipcRenderer.invoke(&#x27;run-python&#x27;, &#x27;list&#x27;, [game.id])</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>backend/src/main.ts + backend/src/preload.ts</figcaption>
+            <pre><code>// main.ts — window settings
+webPreferences: {
+  preload: path.join(__dirname, &#x27;preload.js&#x27;),
+  contextIsolation: true, // page and preload can&#x27;t touch each other&#x27;s variables
+  nodeIntegration: false, // page gets no Node.js
+  sandbox: true,          // page runs with the browser&#x27;s own restrictions
+}
+
+// preload.ts — the page&#x27;s whole &quot;menu&quot;
+const api: RespawnApi = {
+  app: {
+    info: () =&gt; call(IPC.appInfo),
+    ping: (message) =&gt; call(IPC.appPing, message),
+  },
+}
+contextBridge.exposeInMainWorld(&#x27;respawn&#x27;, api)</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> The page used to have full access to your computer and called the backend however it liked. Now it gets exactly one object, window.respawn, with a short list of actions. Everything else is blocked.</p>
+          <p><b>Why.</b> The page shows things from the internet (cover art now, cloud data later). If anything bad ever loaded into it, the old setup would let it read or delete your files. Now the worst it can do is press the buttons on the menu.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Errors</h3>
+          <span class="idea">Errors must travel back across every boundary</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.js (old app)</figcaption>
+            <pre><code>ipcMain.handle(&#x27;run-python&#x27;, async (event, command, args) =&gt; {
+    return new Promise((resolve, reject) =&gt; {
+        const process = spawn(&#x27;python3&#x27;, [ ... ])
+        let output = &#x27;&#x27;
+        process.stdout.on(&#x27;data&#x27;, (data) =&gt; { output += data.toString() })
+        // exit code and error output are ignored:
+        process.on(&#x27;close&#x27;, () =&gt; resolve(output.trim()))
+    })
+})</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>backend/src/controllers/handle.ts + preload.ts</figcaption>
+            <pre><code>// handle.ts — every action answers { ok: true, data } or { ok: false, error }
+ipcMain.handle(channel, async (_event, ...args) =&gt; {
+  try {
+    return { ok: true, data: await handler(...args) }
+  } catch (err) {
+    console.error(`[ipc] ${channel} failed:`, err)
+    const message = err instanceof UserError ? err.message
+      : &#x27;Something went wrong. Details are in the app log.&#x27;
+    return { ok: false, error: message }
+  }
+})
+
+// preload.ts — turn { ok: false } back into a normal error for the page
+if (!result.ok) throw new Error(result.error)</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> Before, a failed backup or restore still looked like a success, because the result was only &quot;whatever got printed&quot;. Now every action sends back either the data or an error message, and the page can show it.</p>
+          <p><b>Why.</b> If you can&#x27;t see a failure, you can&#x27;t fix it, and the user thinks their save is safe when it isn&#x27;t. Sending errors as normal data is a common pattern for messages between programs.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Checking input</h3>
+          <span class="idea">Never trust input that crosses a boundary</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.js (old app)</figcaption>
+            <pre><code>// whatever the page sends goes straight into a command line
+spawn(&#x27;python3&#x27;, [path.join(__dirname, &#x27;..&#x27;, &#x27;snapshot.py&#x27;),
+                  command, ...args])</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>backend/src/controllers/handle.ts + appController.ts</figcaption>
+            <pre><code>export function requireString(value: unknown, name: string, maxLength = 1000): string {
+  if (typeof value !== &#x27;string&#x27;) throw new UserError(`${name} must be text.`)
+  if (value.length &gt; maxLength) throw new UserError(`${name} is too long (max ${maxLength} characters).`)
+  return value
+}
+
+// appController.ts — check first, then call the service
+handle(IPC.appPing, (message: unknown) =&gt; ping(requireString(message, &#x27;Message&#x27;, 200)))</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> The backend now checks what the page sends before doing anything with it, and refuses bad input with a clear message.</p>
+          <p><b>Why.</b> It&#x27;s the same idea as checking system call arguments in a kernel: the backend can&#x27;t assume the page is behaving. Tested: a 300-character message and a number both get refused with readable errors.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Where the code lives</h3>
+          <span class="idea">Separation of concerns: one job per layer</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>old layout</figcaption>
+            <pre><code>ui/
+├── index.js        window + every IPC handler + config, in one file
+├── index.html      page + its logic + its styling setup
+├── game.html       (same, repeated per page)
+└── ...
+snapshot.py         the real work, in another language</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>new layout</figcaption>
+            <pre><code>backend/src/
+├── main.ts                  start the app, open the window   ~ Application.java
+├── preload.ts               the page&#x27;s menu
+├── controllers/
+│   ├── handle.ts            shared plumbing: errors, input checks
+│   └── appController.ts     receive + check, then call a service  ~ @RestController
+└── services/
+    └── appService.ts        the actual work                       ~ @Service
+frontend/src/
+├── api/respawn.ts           the page&#x27;s only way to the backend   ~ axios client
+└── pages/StatusPage.tsx     what you see</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> One file used to do everything. Now each folder has one job, in the same controller → service shape as your Spring Boot projects. Repositories (database access) arrive in Phase 2.</p>
+          <p><b>Why.</b> When each layer has one job, you can test a service without a window, swap the database without touching controllers, and find code quickly.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>One list of allowed actions</h3>
+          <span class="idea">A single shared contract between two programs</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.html (old app)</figcaption>
+            <pre><code>// channel and command names typed by hand on every page
+ipcRenderer.invoke(&#x27;run-python&#x27;, &#x27;list&#x27;, [game.id]).then(output =&gt; {
+  // the answer is plain text, split by hand
+  const count = output.split(&#x27;\n&#x27;).filter(s =&gt; s.trim() !== &#x27;&#x27;).length
+})</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>shared/ipc.ts</figcaption>
+            <pre><code>export const IPC = {
+  appInfo: &#x27;app:info&#x27;,
+  appPing: &#x27;app:ping&#x27;,
+} as const
+
+export type IpcResult&lt;T&gt; = { ok: true; data: T } | { ok: false; error: string }
+
+export interface RespawnApi {
+  app: {
+    info(): Promise&lt;AppInfo&gt;
+    ping(message: string): Promise&lt;string&gt;
+  }
+}</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> Every action the page may ask for is written down once, with the exact shape of its answer. Both sides import this file.</p>
+          <p><b>Why.</b> If one side renames a field, the build fails right away instead of the app showing &quot;undefined&quot;. This is why TypeScript was chosen: the same file works on both sides.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Building the screen</h3>
+          <span class="idea">Components: build each piece once, let state drive the screen</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.html (old app)</figcaption>
+            <pre><code>card.innerHTML = `
+  &lt;div class=&quot;p-6 relative&quot;&gt;
+    &lt;h3 class=&quot;...&quot;&gt;${game.name}&lt;/h3&gt;
+    ...
+`
+// then later, find the element again and change it by hand
+const countEl = document.getElementById(`count-${game.id}`)
+if (countEl) countEl.textContent = count</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>frontend/src/pages/StatusPage.tsx</figcaption>
+            <pre><code>const [info, setInfo] = useState&lt;AppInfo | null&gt;(null)
+const [error, setError] = useState&lt;string | null&gt;(null)
+
+useEffect(() =&gt; {
+  respawn.app.info().then(setInfo).catch((e: Error) =&gt; setError(e.message))
+}, [])
+
+return info
+  ? &lt;dl&gt;... {info.platform} ...&lt;/dl&gt;
+  : &lt;p&gt;Asking the backend…&lt;/p&gt;</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> Instead of building HTML strings and then hunting for elements to update, the page says &quot;here is the data&quot; and React redraws what changed. Phase 1 has one test page; the real pages move over in Phase 3.</p>
+          <p><b>Why.</b> Cloud backup will add states like signed in, uploading and conflict. Updating the page by hand for every combination gets messy; React handles it.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Styling</h3>
+          <span class="idea">Ship what the app needs inside the app</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/index.html (old app)</figcaption>
+            <pre><code>&lt;script src=&quot;https://cdn.tailwindcss.com?plugins=forms,container-queries&quot;&gt;&lt;/script&gt;
+&lt;script id=&quot;tailwind-config&quot;&gt;
+  tailwind.config = { theme: { extend: { colors: { &quot;primary&quot;: &quot;#ba9eff&quot;, ... } } } }
+&lt;/script&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk...&quot; rel=&quot;stylesheet&quot;/&gt;</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>frontend/src/index.css</figcaption>
+            <pre><code>@import &quot;tailwindcss&quot;;
+@import &quot;@fontsource/inter/400.css&quot;;
+@import &quot;@fontsource/space-grotesk/700.css&quot;;
+
+@theme {
+  --font-headline: &quot;Space Grotesk&quot;, system-ui, sans-serif;
+  --color-surface: #0e0e0e;
+  --color-primary: #ba9eff;
+  --color-secondary: #53ddfc;
+  ...
+}</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> Tailwind and the fonts used to download from the internet every time the app opened. Now they&#x27;re installed with the app and built in, using the same colors as before.</p>
+          <p><b>Why.</b> The app looks right with no internet, starts faster, and doesn&#x27;t have to trust outside servers to run code in it.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Locking down the built page</h3>
+          <span class="idea">Defense in depth: more than one safety layer</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>old app</figcaption>
+            <pre><code>(nothing: any script or link could load)</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>vite.config.mts + backend/src/main.ts</figcaption>
+            <pre><code>// vite.config.mts — only the app&#x27;s own files may run (added at build time)
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot;
+  content=&quot;default-src &#x27;self&#x27;; img-src &#x27;self&#x27; data: https:; script-src &#x27;self&#x27;; ...&quot;&gt;
+
+// main.ts — website links open in your real browser, never inside the app
+win.webContents.setWindowOpenHandler(({ url }) =&gt; {
+  if (url.startsWith(&#x27;https://&#x27;)) void shell.openExternal(url)
+  return { action: &#x27;deny&#x27; }
+})</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> The built page may only run the app&#x27;s own code, and links can&#x27;t open new windows inside the app.</p>
+          <p><b>Why.</b> Even with the menu in place, a second layer means one mistake doesn&#x27;t open everything up.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Running and building the app</h3>
+          <span class="idea">A repeatable build: one command, same result every time</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>old app</figcaption>
+            <pre><code>cd ui
+npm start          # electron .   (no build step, no type checks)</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>package.json + scripts/</figcaption>
+            <pre><code>npm run dev        # scripts/dev.mjs:
+                   #   Vite serves the page and reloads it on save
+                   #   esbuild rebuilds the backend on save
+                   #   Electron restarts after each backend rebuild
+
+npm run build      # typecheck  -&gt;  vite build (page)  -&gt;  esbuild (backend)
+                   #   output: dist/frontend/  and  dist/backend/main.js, preload.js</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> There&#x27;s now a real build: TypeScript checks both sides, then the page and backend are bundled into dist/. Development has live reload.</p>
+          <p><b>Why.</b> A build that type-checks every time catches mistakes before you run the app. It&#x27;s also what CI will run on every push in Phase 4.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Electron version</h3>
+          <span class="idea">Keep dependencies patched</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>ui/package.json</figcaption>
+            <pre><code>&quot;electron&quot;: &quot;^41.2.0&quot;     // npm audit: high-severity advisories,
+                          // including a context isolation bypass</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>package.json</figcaption>
+            <pre><code>&quot;electron&quot;: &quot;^45.4.1&quot;     // npm audit: 0 vulnerabilities</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> The new app uses Electron 45. The old app in ui/ still uses 41 until it&#x27;s deleted in Phase 3.</p>
+          <p><b>Why.</b> One of the fixed holes would have broken the page/backend separation this phase built.</p>
+        </div>
+      </article>
+      <article class="change">
+        <div class="change-head">
+          <h3>Finding Switch saves</h3>
+          <span class="idea">Read a real binary file format</span>
+        </div>
+        <div class="code-pair">
+          <figure class="code before">
+            <figcaption><span class="tag">Before</span>old add-game wizard</figcaption>
+            <pre><code>// the only way to add a game: pick a folder by hand
+ipcRenderer.invoke(&#x27;select-folder&#x27;)</code></pre>
+          </figure>
+          <figure class="code after">
+            <figcaption><span class="tag">After</span>switch_saves.py (moves to TypeScript in Phase 2)</figcaption>
+            <pre><code># Ryujinx names save folders by number; its index maps numbers to games.
+# imkvdb.arc: &quot;IMKV&quot; header, then entries: &quot;IMEN&quot;, key size, value size, key, value
+for _ in range(count):
+    key_size, value_size = struct.unpack_from(&quot;&lt;ii&quot;, data, pos + 4)
+    key = data[pos + 12:pos + 12 + key_size]
+    value = data[pos + 12 + key_size:pos + 12 + key_size + value_size]
+    (program_id,) = struct.unpack_from(&quot;&lt;Q&quot;, key, 0)    # game title ID
+    save_type = key[0x20]                              # skip system saves
+    (save_id,) = struct.unpack_from(&quot;&lt;Q&quot;, value, 0)    # folder number</code></pre>
+          </figure>
+        </div>
+        <div class="explain">
+          <p><b>What changed.</b> The add-game wizard can list Switch saves by game name instead of making you find a numbered folder.</p>
+          <p><b>Why.</b> It reads the emulator&#x27;s own binary index, a real systems task. It only reads save files, never games. Tested against a made-up index only, so it still needs a check with real Ryujinx data.</p>
+        </div>
+      </article>
+    </div>
+    <div class="box">
+      <h3>Commits so far (branch rebuild/phase-1)</h3>
+      <ol class="commits">
+        <li><code>77318c8</code> Store snapshots per game; add history and settings pages <span class="muted">· your work from before this rebuild</span></li>
+        <li><code>9489b08</code> Find Nintendo Switch saves from Ryujinx/Ryubing</li>
+        <li><code>08ac60f</code> Add architecture notes, rebuild roadmap, project brief and tracker</li>
+        <li><code>4a54728</code> Phase 1: frontend/backend/shared structure with React + TypeScript</li>
+      </ol>
+      <p class="muted">The Play beta is kept apart on <code>experiment/play-beta</code>. The old app in <code>ui/</code> is unchanged by Phase 1 and still runs.</p>
+    </div>
+  </section>
+<!-- CODE-CHANGES:END -->
+
   <section aria-labelledby="rest-h">
     <h2 id="rest-h" class="eyebrow" style="font-family:var(--font-mono);font-size:12px">Also</h2>
     <div class="two">
@@ -228,7 +625,7 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
   </section>
 
   <footer>
-    Details live in the repo: <code>ARCHITECTURE.md</code> (how it works today), <code>ROADMAP.md</code> (the plan) and <code>CLAUDE.md</code> (goals). Last updated <span id="updated">2026-11-23 (Phase 1 finished)</span>.
+    Details live in the repo: <code>ARCHITECTURE.md</code> (how it works today), <code>ROADMAP.md</code> (the plan) and <code>CLAUDE.md</code> (goals). Last updated <span id="updated">2026-11-23 (code changes added)</span>.
   </footer>
 </div>
 
